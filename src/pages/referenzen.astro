@@ -1,0 +1,126 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import CtaBlock from '@/components/sections/CtaBlock.astro';
+
+const testimonials = [
+  {
+    name:   'Sarah M.',
+    alter:  '24 Jahre',
+    text:   'Ich bin so glücklich mit dem Ergebnis! Das Team ist super nett und man fühlt sich von Anfang an gut aufgehoben. Die Aligner waren die beste Entscheidung — kaum sichtbar und wirklich bequem.',
+    stern:  5,
+    methode:'Unsichtbare Aligner',
+  },
+  {
+    name:   'Familie Schreiber',
+    alter:  'Eltern von Lena, 11 Jahre',
+    text:   'Für unsere Tochter die perfekte Praxis. Einfühlsam, kompetent und stets freundlich — besonders gegenüber Kindern, die etwas nervös sind. Wir sind rundum zufrieden!',
+    stern:  5,
+    methode:'Frühbehandlung',
+  },
+  {
+    name:   'Michael K.',
+    alter:  '38 Jahre',
+    text:   'Nach Jahren mit schiefen Zähnen habe ich mich endlich getraut. Das Ergebnis übersteigt alle Erwartungen! Dr. Müller hat mich super beraten und die Behandlung war völlig schmerzfrei.',
+    stern:  5,
+    methode:'Feste Zahnspange (keramisch)',
+  },
+  {
+    name:   'Julia B.',
+    alter:  '31 Jahre',
+    text:   'Die transparenten Aligner waren die beste Entscheidung. Meine Kollegen haben monatelang nichts gemerkt! Nach 14 Monaten sind meine Zähne perfekt gerade.',
+    stern:  5,
+    methode:'Unsichtbare Aligner',
+  },
+  {
+    name:   'Thomas und Claudia R.',
+    alter:  'Eltern von zwei Patienten',
+    text:   'Beide Kinder sind in Behandlung bei Dr. Müller — und wir haben nur Gutes zu berichten. Die Praxis ist modern, sauber, das Team immer freundlich und die Wartezeiten kurz.',
+    stern:  5,
+    methode:'Feste Zahnspange',
+  },
+  {
+    name:   'Anna-Lena W.',
+    alter:  '19 Jahre',
+    text:   'Ich habe die Behandlung als Erwachsene begonnen und bereue es keine Sekunde. Die Beratung war ausführlich, die Kosten wurden transparent erklärt. Empfehle die Praxis wärmstens!',
+    stern:  5,
+    methode:'Erwachsenen-KFO',
+  },
+];
+---
+
+<BaseLayout
+  title="Referenzen & Bewertungen – KFO Praxis Dr. Müller"
+  description="Was unsere Patienten über uns sagen: Erfahrungsberichte und Bewertungen zur Kieferorthopädie-Behandlung bei Dr. Müller in Musterstadt."
+>
+  <Header />
+  <main>
+
+    <!-- Page Hero -->
+    <section class="bg-gradient-to-br from-primary-900 to-primary-700 py-16 lg:py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl lg:text-5xl font-extrabold text-white">Referenzen</h1>
+        <p class="mt-4 text-lg text-primary-200 max-w-2xl mx-auto">
+          Was unsere Patienten über ihre Behandlung berichten — authentisch und aus erster Hand.
+        </p>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="bg-white py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Aggregate score -->
+        <div class="text-center mb-14">
+          <div class="inline-flex flex-col items-center bg-primary-50 rounded-2xl px-10 py-8">
+            <div class="text-6xl font-extrabold text-primary-900">5,0</div>
+            <div class="flex gap-1 my-2">
+              {Array.from({ length: 5 }).map(() => (
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                </svg>
+              ))}
+            </div>
+            <div class="text-slate-500 text-sm font-medium">Basierend auf 80+ Bewertungen</div>
+          </div>
+        </div>
+
+        <!-- Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+          {testimonials.map(({ name, alter, text, stern, methode }) => (
+            <div class="bg-white border border-slate-100 rounded-2xl p-7 shadow-card flex flex-col">
+              <!-- Stars -->
+              <div class="flex gap-1 mb-4">
+                {Array.from({ length: stern }).map(() => (
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                  </svg>
+                ))}
+              </div>
+
+              <!-- Quote -->
+              <blockquote class="text-slate-600 text-sm leading-relaxed italic flex-1">
+                "{text}"
+              </blockquote>
+
+              <!-- Author -->
+              <div class="mt-5 pt-5 border-t border-slate-100 flex items-center justify-between">
+                <div>
+                  <div class="font-bold text-primary-900 text-sm">{name}</div>
+                  <div class="text-slate-400 text-xs mt-0.5">{alter}</div>
+                </div>
+                <div class="text-xs bg-accent-50 text-accent-700 font-medium px-2.5 py-1 rounded-full">
+                  {methode}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <CtaBlock />
+  </main>
+  <Footer />
+</BaseLayout>

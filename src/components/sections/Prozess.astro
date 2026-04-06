@@ -1,0 +1,73 @@
+---
+const steps = [
+  {
+    number: '01',
+    title:  'Erstberatung',
+    text:   'Kostenlose Beratung, Befundaufnahme und individuelle Aufklärung über alle Behandlungsmöglichkeiten.',
+  },
+  {
+    number: '02',
+    title:  'Behandlungsplan',
+    text:   'Auf Basis der Diagnostik (inkl. digitales 3D-Modell) erstellen wir Ihren persönlichen Behandlungsplan.',
+  },
+  {
+    number: '03',
+    title:  'Aktive Behandlung',
+    text:   'Beginn der Behandlung mit regelmäßigen Kontroll- und Aktivierungsterminen — wir begleiten Sie Schritt für Schritt.',
+  },
+  {
+    number: '04',
+    title:  'Retention & Nachsorge',
+    text:   'Nach Abschluss der Behandlung sichern wir mit Retainern Ihr Ergebnis — dauerhaft und zuverlässig.',
+  },
+];
+---
+
+<section class="bg-primary-50 py-20 lg:py-28">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Header -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center gap-2 text-accent-600 text-sm font-semibold mb-3 uppercase tracking-widest">
+        <span class="block w-6 h-px bg-accent-500"></span>
+        Transparenter Ablauf
+        <span class="block w-6 h-px bg-accent-500"></span>
+      </div>
+      <h2 class="text-3xl lg:text-4xl font-extrabold text-primary-900">So arbeiten wir</h2>
+      <p class="mt-4 text-lg text-slate-500 max-w-xl mx-auto">
+        Von der ersten Beratung bis zum strahlenden Ergebnis — klar strukturiert und auf Sie abgestimmt.
+      </p>
+    </div>
+
+    <!-- Steps -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-4 relative">
+
+      <!-- Connector line (desktop only) -->
+      <div class="hidden lg:block absolute top-10 left-[12.5%] right-[12.5%] h-px bg-primary-200" aria-hidden="true"></div>
+
+      {steps.map(({ number, title, text }) => (
+        <div class="relative flex flex-col items-center text-center">
+          <!-- Step circle -->
+          <div class="w-20 h-20 rounded-full bg-white border-4 border-primary-200 flex flex-col items-center justify-center shadow-sm mb-6 relative z-10">
+            <span class="text-xs font-bold text-accent-500 uppercase tracking-widest leading-none">Schritt</span>
+            <span class="text-2xl font-extrabold text-primary-800 leading-none">{number}</span>
+          </div>
+          <h3 class="text-lg font-bold text-primary-900 mb-2">{title}</h3>
+          <p class="text-sm text-slate-500 leading-relaxed max-w-xs">{text}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="text-center mt-12">
+      <a
+        href="/kontakt"
+        class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold px-7 py-3.5 rounded-xl transition-colors shadow-sm"
+      >
+        Jetzt ersten Schritt machen
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

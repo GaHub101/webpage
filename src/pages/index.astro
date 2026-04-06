@@ -1,0 +1,27 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Trust from '@/components/sections/Trust.astro';
+import Leistungen from '@/components/sections/Leistungen.astro';
+import Prozess from '@/components/sections/Prozess.astro';
+import UeberUnsTeaser from '@/components/sections/UeberUnsTeaser.astro';
+import CtaBlock from '@/components/sections/CtaBlock.astro';
+---
+
+<BaseLayout
+  title="KFO Praxis Dr. Müller – Kieferorthopädie in Musterstadt"
+  description="Ihre Fachpraxis für Kieferorthopädie in Musterstadt. Aligner, Zahnspangen & Frühbehandlung für Kinder, Jugendliche und Erwachsene. Kostenlose Erstberatung."
+>
+  <Header />
+  <main>
+    <Hero />
+    <Trust />
+    <Leistungen />
+    <Prozess />
+    <UeberUnsTeaser />
+    <CtaBlock />
+  </main>
+  <Footer />
+</BaseLayout>

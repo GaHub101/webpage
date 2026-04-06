@@ -1,0 +1,78 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  ogImage = '/og-default.jpg',
+  noindex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://www.kfo-muster.de');
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalBusiness',
+  name: 'KFO Praxis Dr. Müller',
+  description: 'Fachpraxis für Kieferorthopädie – Beratung, Behandlung und Nachsorge für die ganze Familie.',
+  url: 'https://www.kfo-muster.de',
+  telephone: '+49-123-456780',
+  email: 'info@kfo-muster.de',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Musterstraße 1',
+    addressLocality: 'Musterstadt',
+    postalCode: '12345',
+    addressCountry: 'DE',
+  },
+  openingHoursSpecification: [
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:00', closes: '18:00' },
+  ],
+  priceRange: '€€',
+  medicalSpecialty: 'Orthodontics',
+};
+---
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site ?? 'https://www.kfo-muster.de')} />
+    <meta property="og:locale" content="de_DE" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site ?? 'https://www.kfo-muster.de')} />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body class="font-sans antialiased text-slate-900 bg-white">
+    <slot />
+  </body>
+</html>

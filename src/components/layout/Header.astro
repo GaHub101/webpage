@@ -1,0 +1,115 @@
+---
+const navLinks = [
+  { href: '/leistungen', label: 'Leistungen' },
+  { href: '/ueber-uns',  label: 'Über uns'  },
+  { href: '/referenzen', label: 'Referenzen' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-100 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 lg:h-20">
+
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2.5 group" aria-label="KFO Praxis – Startseite">
+        <div class="w-9 h-9 bg-primary-700 rounded-lg flex items-center justify-center shadow-sm group-hover:bg-primary-800 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none">
+            <path d="M6 4 C4.5 4 3 5.5 3 8 C3 12 4.5 16 6 18.5 C6.8 19.9 7.5 21 8.8 21 C10 21 10.5 19 11.2 17.5 C11.6 16.6 12 16.1 12 16.1 C12 16.1 12.4 16.6 12.8 17.5 C13.5 19 14 21 15.2 21 C16.5 21 17.2 19.9 18 18.5 C19.5 16 21 12 21 8 C21 5.5 19.5 4 18 4 C16.8 4 15.5 4.8 12 4.8 C8.5 4.8 7.2 4 6 4Z" fill="white" stroke="none"/>
+          </svg>
+        </div>
+        <div class="leading-tight">
+          <span class="block text-primary-900 font-bold text-base tracking-tight">KFO Praxis</span>
+          <span class="block text-accent-600 font-medium text-xs tracking-wide">Dr. Müller</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center gap-1" aria-label="Hauptnavigation">
+        {navLinks.map(({ href, label }) => (
+          <a
+            href={href}
+            class={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              currentPath.startsWith(href)
+                ? 'text-primary-700 bg-primary-50'
+                : 'text-slate-600 hover:text-primary-700 hover:bg-slate-50'
+            }`}
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+
+      <!-- Desktop CTA -->
+      <div class="hidden lg:flex items-center gap-3">
+        <a href="tel:+491234567890" class="text-sm text-slate-500 hover:text-primary-700 transition-colors font-medium">
+          +49 123 456 78 0
+        </a>
+        <a
+          href="/kontakt"
+          class="inline-flex items-center gap-1.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors shadow-sm"
+        >
+          Termin anfragen
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <button
+        id="mobile-menu-btn"
+        aria-label="Menü öffnen"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="lg:hidden p-2 rounded-lg text-slate-600 hover:text-primary-700 hover:bg-slate-50 transition-colors"
+      >
+        <svg id="icon-open"  xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-100 py-4 space-y-1">
+      {navLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class="block px-4 py-3 rounded-lg text-sm font-medium text-slate-700 hover:text-primary-700 hover:bg-primary-50 transition-colors"
+        >
+          {label}
+        </a>
+      ))}
+      <div class="pt-3 pb-1 border-t border-slate-100 mt-3 flex flex-col gap-2">
+        <a href="tel:+491234567890" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-500 font-medium">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+          </svg>
+          +49 123 456 78 0
+        </a>
+        <a href="/kontakt" class="mx-4 flex justify-center bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-5 py-3 rounded-xl transition-colors">
+          Termin anfragen
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn   = document.getElementById('mobile-menu-btn');
+  const menu  = document.getElementById('mobile-menu');
+  const open  = document.getElementById('icon-open');
+  const close = document.getElementById('icon-close');
+
+  btn?.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    menu?.classList.toggle('hidden');
+    open?.classList.toggle('hidden');
+    close?.classList.toggle('hidden');
+  });
+</script>

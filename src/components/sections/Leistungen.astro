@@ -1,0 +1,88 @@
+---
+const leistungen = [
+  {
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />`,
+    title:  'Unsichtbare Aligner',
+    text:   'Transparente, herausnehmbare Schienen korrigieren Zahnfehlstellungen diskret — ohne Brackets und kaum sichtbar im Alltag.',
+    color:  'bg-accent-50 text-accent-600',
+  },
+  {
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />`,
+    title:  'Feste Zahnspange',
+    text:   'Die bewährte Methode für alle Fehlstellungen. Modern, präzise und effektiv — auch für komplexe Korrekturen.',
+    color:  'bg-primary-50 text-primary-600',
+  },
+  {
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />`,
+    title:  'Herausnehmbare Spange',
+    text:   'Besonders für Kinder geeignet: komfortabel, flexibel und optimal für die frühe Einflussnahme auf das Kieferwachstum.',
+    color:  'bg-violet-50 text-violet-600',
+  },
+  {
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />`,
+    title:  'Frühbehandlung',
+    text:   'Früh erkannt — leichter behandelt. Ab dem 6. Lebensjahr können Fehlstellungen oft mit einfacheren Mitteln korrigiert werden.',
+    color:  'bg-emerald-50 text-emerald-600',
+  },
+  {
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />`,
+    title:  'Erwachsenen-KFO',
+    text:   'Es ist nie zu spät! Immer mehr Erwachsene entscheiden sich für eine Korrektur — diskret, schonend und mit dauerhaftem Ergebnis.',
+    color:  'bg-orange-50 text-orange-600',
+  },
+  {
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />`,
+    title:  'Retention & Nachsorge',
+    text:   'Das erzielte Ergebnis langfristig sichern. Retainer und regelmäßige Kontrollen erhalten Ihr schönes Lächeln dauerhaft.',
+    color:  'bg-rose-50 text-rose-600',
+  },
+];
+---
+
+<section class="bg-white py-20 lg:py-28">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Header -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center gap-2 text-accent-600 text-sm font-semibold mb-3 uppercase tracking-widest">
+        <span class="block w-6 h-px bg-accent-500"></span>
+        Was wir für Sie tun
+        <span class="block w-6 h-px bg-accent-500"></span>
+      </div>
+      <h2 class="text-3xl lg:text-4xl font-extrabold text-primary-900">Unsere Leistungen</h2>
+      <p class="mt-4 text-lg text-slate-500 max-w-2xl mx-auto">
+        Moderne Kieferorthopädie für jedes Alter — individuell, schonend und auf Ihre Bedürfnisse abgestimmt.
+      </p>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {leistungen.map(({ icon, title, text, color }) => (
+        <div class="bg-white border border-slate-100 rounded-2xl p-7 shadow-card hover:shadow-lg hover:-translate-y-1 transition-all duration-200 group">
+          <div class={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 ${color}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" set:html={icon} />
+          </div>
+          <h3 class="text-lg font-bold text-primary-900 mb-2">{title}</h3>
+          <p class="text-slate-500 text-sm leading-relaxed">{text}</p>
+          <div class="mt-5">
+            <a href="/leistungen" class="text-sm font-semibold text-primary-600 hover:text-primary-800 flex items-center gap-1 transition-colors group-hover:gap-2">
+              Mehr erfahren
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="/leistungen" class="inline-flex items-center gap-2 border-2 border-primary-600 text-primary-700 hover:bg-primary-50 font-semibold px-7 py-3 rounded-xl transition-colors">
+        Alle Leistungen ansehen
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

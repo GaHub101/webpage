@@ -1,0 +1,147 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import CtaBlock from '@/components/sections/CtaBlock.astro';
+
+const team = [
+  {
+    name: 'Dr. med. dent. Maria Müller',
+    rolle: 'Fachärztin für Kieferorthopädie',
+    text: 'Inhaberin und Leiterin der Praxis. Studium in München, Fachzahnarztausbildung in Heidelberg. Mitglied der Deutschen Gesellschaft für Kieferorthopädie (DGKFO).',
+  },
+  {
+    name: 'Jonas Weber',
+    rolle: 'Zahnmedizinischer Fachangestellter',
+    text: 'Seit 8 Jahren Teil des Teams. Spezialist für die Betreuung unserer jungen Patienten und Ansprechpartner für alle Fragen rund um Abrechnung und Kassenanträge.',
+  },
+  {
+    name: 'Laura Schmidt',
+    rolle: 'Praxismanagerin & Empfang',
+    text: 'Erste Ansprechpartnerin für Termine, Fragen und Organisation. Sorgt dafür, dass sich alle Patienten von der ersten Sekunde an willkommen fühlen.',
+  },
+];
+
+const werte = [
+  {
+    title:  'Individuelle Betreuung',
+    text:   'Jeder Patient ist einzigartig. Wir nehmen uns Zeit, Ihren Fall zu verstehen und einen Behandlungsplan zu entwickeln, der zu Ihrem Leben passt.',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />`,
+  },
+  {
+    title:  'Modernste Technik',
+    text:   'Digitale 3D-Diagnostik, Intraoralscanner und computergestützte Planung sorgen für präzise Diagnosen und vorhersehbare Ergebnisse.',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />`,
+  },
+  {
+    title:  'Transparente Kommunikation',
+    text:   'Wir erklären jeden Schritt verständlich und informieren Sie umfassend über Kosten, Ablauf und Alternativen — damit Sie fundierte Entscheidungen treffen können.',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />`,
+  },
+];
+---
+
+<BaseLayout
+  title="Über uns – KFO Praxis Dr. Müller Musterstadt"
+  description="Lernen Sie unser Team kennen: Dr. Maria Müller und ihr Team begleiten Patienten jeden Alters mit Fachwissen, Empathie und modernster Technik."
+>
+  <Header />
+  <main>
+
+    <!-- Page Hero -->
+    <section class="bg-gradient-to-br from-primary-900 to-primary-700 py-16 lg:py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl lg:text-5xl font-extrabold text-white">Über uns</h1>
+        <p class="mt-4 text-lg text-primary-200 max-w-2xl mx-auto">
+          Lernen Sie uns kennen — die Menschen hinter Ihrem schönen Lächeln.
+        </p>
+      </div>
+    </section>
+
+    <!-- Story -->
+    <section class="bg-white py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto text-center mb-16">
+          <div class="inline-flex items-center gap-2 text-accent-600 text-sm font-semibold mb-4 uppercase tracking-widest">
+            <span class="block w-6 h-px bg-accent-500"></span>
+            Unsere Geschichte
+          </div>
+          <h2 class="text-3xl lg:text-4xl font-extrabold text-primary-900 mb-6">
+            Seit 2009 für Ihr Lächeln da
+          </h2>
+          <p class="text-slate-500 leading-relaxed mb-4">
+            Was als kleine Einzelpraxis in Musterstadt begann, ist heute eine moderne Fachpraxis, die jährlich hunderte Patienten betreut — vom Kleinkind bis zum Senior.
+          </p>
+          <p class="text-slate-500 leading-relaxed">
+            Unser Antrieb war und bleibt derselbe: Kieferorthopädie auf höchstem Niveau, nah am Menschen, verständlich erklärt und mit echtem Herz für unsere Patienten.
+          </p>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+          {[
+            { value: '2009', label: 'Gründungsjahr' },
+            { value: '500+', label: 'Behandelte Patienten' },
+            { value: '15+',  label: 'Jahre Erfahrung' },
+            { value: '98%',  label: 'Weiterempfehlungsrate' },
+          ].map(({ value, label }) => (
+            <div class="bg-primary-50 rounded-2xl p-6 text-center">
+              <div class="text-3xl font-extrabold text-primary-800 mb-1">{value}</div>
+              <div class="text-sm text-slate-500 font-medium">{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section class="bg-primary-50 py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <div class="inline-flex items-center gap-2 text-accent-600 text-sm font-semibold mb-3 uppercase tracking-widest">
+            <span class="block w-6 h-px bg-accent-500"></span>
+            Unser Team
+          </div>
+          <h2 class="text-3xl lg:text-4xl font-extrabold text-primary-900">Die Menschen hinter der Praxis</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {team.map(({ name, rolle, text }) => (
+            <div class="bg-white rounded-2xl shadow-card p-8 text-center">
+              <div class="w-20 h-20 bg-gradient-to-br from-primary-200 to-accent-200 rounded-full mx-auto mb-5 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <h3 class="font-bold text-primary-900 text-lg mb-1">{name}</h3>
+              <p class="text-accent-600 text-sm font-semibold mb-4">{rolle}</p>
+              <p class="text-slate-500 text-sm leading-relaxed">{text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Werte -->
+    <section class="bg-white py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl lg:text-4xl font-extrabold text-primary-900">Was uns auszeichnet</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {werte.map(({ title, text, icon }) => (
+            <div class="text-center">
+              <div class="w-14 h-14 bg-primary-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" set:html={icon} />
+              </div>
+              <h3 class="font-bold text-primary-900 text-lg mb-3">{title}</h3>
+              <p class="text-slate-500 text-sm leading-relaxed">{text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <CtaBlock />
+  </main>
+  <Footer />
+</BaseLayout>
