@@ -1,0 +1,120 @@
+---
+import { Picture } from 'astro:assets';
+import { url } from '../lib/url';
+import { site } from '../config/site';
+import { nbsp } from '../lib/format';
+import Icon from './Icon.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  text: string;
+  image: ImageMetadata;
+  imageAlt: string;
+}
+
+const { eyebrow, title, text, image, imageAlt } = Astro.props;
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <Picture
+    src={image}
+    alt={imageAlt}
+    class="hero__img"
+    widths={[640, 960, 1280, 1920, 2400]}
+    sizes="100vw"
+    formats={['avif', 'webp']}
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="hero__overlay" aria-hidden="true"></div>
+  <div class="container hero__content">
+    <p class="hero__eyebrow">{eyebrow}</p>
+    <h1 id="hero-title">{title}</h1>
+    <p class="hero__text">{text}</p>
+    <div class="hero__actions">
+      <a class="btn btn--primary" href={url('/kontakt/')}>
+        Kontakt
+        <Icon name="arrowRight" />
+      </a>
+      <a class="btn btn--ghost" href={`tel:${site.phone.tel}`}>
+        <Icon name="phone" />
+        {nbsp(site.phone.display)}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    min-height: clamp(28rem, 72vh, 44rem);
+    color: var(--c-text);
+    border-bottom: 1px solid var(--c-border);
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .hero > :global(picture),
+  .hero__overlay {
+    grid-area: 1 / 1;
+  }
+
+  .hero :global(.hero__img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero > :global(picture) {
+    z-index: -2;
+  }
+
+  .hero__overlay {
+    z-index: -1;
+    background: rgb(15 21 23 / 0.8);
+  }
+
+  .hero__content {
+    grid-area: 1 / 1;
+    align-self: center;
+    padding-block: var(--sp-8);
+  }
+
+  .hero__eyebrow {
+    display: inline-flex;
+    margin-bottom: var(--sp-2);
+    padding-left: 0.75rem;
+    border-left: 3px solid var(--c-primary);
+    color: var(--c-primary);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 16ch;
+    font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem);
+    color: var(--c-text);
+  }
+
+  .hero__text {
+    max-width: 36rem;
+    font-size: var(--fs-lg);
+    color: var(--c-text-muted);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    margin-top: var(--sp-4);
+  }
+
+  .hero__actions .btn {
+    font-variant-numeric: tabular-nums;
+  }
+
+</style>

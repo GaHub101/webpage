@@ -1,0 +1,13 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import Gallery from '../../components/Gallery.astro';
+
+const page = (await getEntry('seiten', 'praxisrundgang'))!;
+const items = (await getCollection('galerie')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge).map((g) => g.data);
+---
+
+<PageLayout title={page.data.title} description={page.data.description} lead={page.data.lead}>
+  <h2 class="visually-hidden">Bilder der Praxis</h2>
+  <Gallery items={items} />
+</PageLayout>

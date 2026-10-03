@@ -1,0 +1,82 @@
+---
+import type { DayHours } from '../config/site';
+import { formatSlots } from '../lib/hours';
+
+interface Props {
+  caption: string;
+  hours: readonly DayHours[];
+  /** Überschrift sichtbar oder nur für Screenreader */
+  showCaption?: boolean;
+  variant?: 'default' | 'footer';
+}
+
+const { caption, hours, showCaption = true, variant = 'default' } = Astro.props;
+---
+
+<table class:list={['hours', `hours--${variant}`]}>
+  <caption class:list={{ 'visually-hidden': !showCaption }}>{caption}</caption>
+  <tbody>
+    {
+      hours.map((day) => (
+        <tr>
+          <th scope="row">{day.label}</th>
+          <td class:list={{ closed: day.slots.length === 0 }}>{formatSlots(day)}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+
+<style>
+  .hours {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  caption {
+    text-align: left;
+    font-weight: var(--fw-bold);
+    margin-bottom: var(--sp-1);
+  }
+
+  th,
+  td {
+    padding: 0.5rem 0;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  th {
+    font-weight: var(--fw-semibold);
+    padding-right: var(--sp-2);
+  }
+
+  td {
+    text-align: right;
+  }
+
+  .closed {
+    color: var(--c-text-muted);
+  }
+
+  /* Kompakt: Tag und Zeiten untereinander */
+  .hours--footer tr {
+    display: block;
+    padding-block: 0.25rem;
+  }
+
+  .hours--footer th,
+  .hours--footer td {
+    display: block;
+    padding: 0;
+    border: 0;
+    font-size: var(--fs-sm);
+    text-align: left;
+  }
+
+  .hours--footer th {
+    font-weight: var(--fw-medium);
+  }
+</style>

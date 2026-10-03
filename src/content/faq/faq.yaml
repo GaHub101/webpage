@@ -1,0 +1,45 @@
+# HÄUFIGE FRAGEN
+# Jede Frage beginnt mit «- id:». Die id ist ein eindeutiges Kürzel ohne Leerzeichen.
+# Antworten mit mehreren Absätzen: «antwort: |» verwenden und Absätze mit einer Leerzeile trennen.
+# TODO: Fragen und Antworten aus der bestehenden Website übernehmen.
+
+- id: wann-erste-kontrolle
+  reihenfolge: 1
+  frage: Ab welchem Alter sollte mein Kind kieferorthopädisch untersucht werden?
+  antwort: |
+    Wir empfehlen eine erste Kontrolle im Alter von etwa 8 bis 9 Jahren. Bei auffälligen Befunden – zum Beispiel einem Kreuzbiss, starkem Vorbiss oder frühem Milchzahnverlust – auch früher.
+
+    Viele Kinder werden von ihrer Zahnärztin oder ihrem Zahnarzt überwiesen. Sie können aber auch direkt einen Termin vereinbaren.
+
+- id: ueberweisung
+  reihenfolge: 2
+  frage: Brauche ich eine Überweisung?
+  antwort: Nein. Eine Überweisung ist hilfreich, aber nicht zwingend. Sie können sich direkt telefonisch bei uns anmelden.
+
+- id: dauer
+  reihenfolge: 3
+  frage: Wie lange dauert eine Behandlung?
+  antwort: Eine aktive Behandlung dauert in der Regel zwischen ein und zwei Jahren, je nach Ausgangslage und Methode. Anschliessend folgt die Retentionsphase, in der das Ergebnis gesichert wird.
+
+- id: kosten
+  reihenfolge: 4
+  frage: Was kostet eine Zahnspange und wer bezahlt sie?
+  antwort: |
+    Die Kosten hängen von der Art und Dauer der Behandlung ab. Vor Beginn erhalten Sie einen schriftlichen Kostenvoranschlag.
+
+    Die Grundversicherung übernimmt kieferorthopädische Behandlungen nur in wenigen Ausnahmefällen (z. B. bei Geburtsgebrechen über die IV). Viele Zusatzversicherungen beteiligen sich – am besten wird diese früh, idealerweise vor dem ersten Termin, abgeschlossen.
+
+- id: schmerzen
+  reihenfolge: 5
+  frage: Tut eine Zahnspange weh?
+  antwort: In den ersten Tagen nach dem Einsetzen oder Nachstellen können die Zähne empfindlich sein. Dieses Druckgefühl klingt meist nach wenigen Tagen ab.
+
+- id: erwachsene
+  reihenfolge: 6
+  frage: Kann man auch als Erwachsener noch eine Zahnspange tragen?
+  antwort: Ja. Zähne lassen sich in jedem Alter bewegen. Für Erwachsene bieten sich besonders unauffällige Methoden wie Aligner oder Lingualtechnik an.
+
+- id: termin-verschieben
+  reihenfolge: 7
+  frage: Wie kann ich einen Termin verschieben?
+  antwort: Bitte rufen Sie uns während der telefonischen Erreichbarkeit an. Terminverschiebungen per E-Mail oder Kontaktformular können wir leider nicht bearbeiten.

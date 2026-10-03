@@ -1,0 +1,147 @@
+---
+import { site } from '../config/site';
+import { nbsp } from '../lib/format';
+import { url } from '../lib/url';
+import Icon from './Icon.astro';
+import OpeningHours from './OpeningHours.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <section aria-labelledby="footer-praxis">
+        <h2 id="footer-praxis" class="site-footer__title">{site.name}</h2>
+        <address>
+          {site.address.street}<br />
+          {`${site.address.zip} ${site.address.city}`}
+        </address>
+        <ul class="site-footer__contact">
+          <li>
+            <a href={`tel:${site.phone.tel}`}>
+              <Icon name="phone" size={18} />
+              <span><span class="visually-hidden">Telefon: </span>{nbsp(site.phone.display)}</span>
+            </a>
+          </li>
+          <li>
+            <a href={`mailto:${site.email}`}>
+              <Icon name="mail" size={18} />
+              <span><span class="visually-hidden">E-Mail: </span>{site.email}</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="footer-zeiten">
+        <h2 id="footer-zeiten" class="site-footer__title">Öffnungszeiten</h2>
+        <OpeningHours caption="Öffnungszeiten der Praxis" hours={site.openingHours} showCaption={false} variant="footer" />
+      </section>
+
+      <section aria-labelledby="footer-telefon">
+        <h2 id="footer-telefon" class="site-footer__title">Telefonisch erreichbar</h2>
+        <OpeningHours caption="Telefonische Erreichbarkeit" hours={site.phoneHours} showCaption={false} variant="footer" />
+        <p class="site-footer__note">
+          <Icon name="info" size={16} />
+          <span>{site.mailNotice}</span>
+        </p>
+      </section>
+
+      <nav aria-labelledby="footer-links">
+        <h2 id="footer-links" class="site-footer__title">Service</h2>
+        <ul class="site-footer__links">
+          <li>
+            <a href={url(site.referralPdf.href)} download>
+              <Icon name="download" size={16} />
+              {site.referralPdf.label}
+            </a>
+          </li>
+          <li><a href={url('/leistungen/notfaelle/')}>Notfälle</a></li>
+          <li><a href={url('/kontakt/')}>Kontakt und Anfahrt</a></li>
+          <li><a href={url('/impressum/')}>Impressum</a></li>
+          <li><a href={url('/datenschutz/')}>Datenschutz</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <p class="site-footer__bottom">© {year} {site.name}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: auto;
+    padding-block: var(--sp-8) var(--sp-4);
+    background: var(--c-bg-warm);
+    border-top: 1px solid var(--c-border);
+    font-size: var(--fs-sm);
+  }
+
+  .site-footer__grid {
+    display: grid;
+    gap: var(--sp-5) var(--sp-4);
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  }
+
+  .site-footer__title {
+    font-size: 1rem;
+    margin-bottom: var(--sp-2);
+  }
+
+  address {
+    font-style: normal;
+    margin-bottom: var(--sp-2);
+  }
+
+  .site-footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-footer__contact a,
+  .site-footer__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 32px;
+    padding-block: 0.25rem;
+    color: var(--c-text);
+    text-decoration: none;
+  }
+
+  .site-footer__contact a {
+    font-weight: var(--fw-semibold);
+  }
+
+  .site-footer__contact a:hover,
+  .site-footer__links a:hover {
+    color: var(--c-primary-strong);
+    text-decoration: underline;
+  }
+
+  .site-footer__contact :global(svg),
+  .site-footer__links :global(svg) {
+    color: var(--c-primary);
+    flex: none;
+  }
+
+  .site-footer__note {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: var(--sp-2);
+    color: var(--c-text-muted);
+  }
+
+  .site-footer__note :global(svg) {
+    flex: none;
+    margin-top: 0.2em;
+  }
+
+  .site-footer__bottom {
+    margin: var(--sp-6) 0 0;
+    padding-top: var(--sp-3);
+    border-top: 1px solid var(--c-border);
+    color: var(--c-text-muted);
+  }
+</style>

@@ -1,0 +1,57 @@
+---
+import { site } from '../config/site';
+import { url } from '../lib/url';
+import Icon from './Icon.astro';
+
+const { notice } = site;
+---
+
+{
+  notice.enabled && (
+    <aside class="notice" aria-label={notice.title}>
+      <div class="container notice__inner">
+        <Icon name="info" class="notice__icon" />
+        <p class="notice__text">
+          <strong>{notice.title}:</strong> {notice.text}
+          {notice.link && (
+            <>
+              {' '}
+              <a href={url(notice.link.href)}>{notice.link.label}</a>
+            </>
+          )}
+        </p>
+      </div>
+    </aside>
+  )
+}
+
+<style>
+  .notice {
+    background: var(--c-primary-soft);
+    color: var(--c-text);
+    border-bottom: 1px solid color-mix(in srgb, var(--c-primary) 25%, transparent);
+  }
+
+  .notice__inner {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-1);
+    padding-block: 0.875rem;
+  }
+
+  .notice__inner :global(.notice__icon) {
+    flex: none;
+    margin-top: 0.15em;
+    color: var(--c-primary);
+  }
+
+  .notice__text {
+    margin: 0;
+    font-size: var(--fs-sm);
+  }
+
+  .notice a {
+    font-weight: var(--fw-bold);
+    color: var(--c-primary-strong);
+  }
+</style>

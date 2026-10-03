@@ -1,0 +1,13 @@
+---
+import { getEntry, render } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+
+const page = (await getEntry('seiten', 'datenschutz'))!;
+const { Content } = await render(page);
+---
+
+<PageLayout title={page.data.title} description={page.data.description} width="narrow">
+  <div class="prose">
+    <Content />
+  </div>
+</PageLayout>

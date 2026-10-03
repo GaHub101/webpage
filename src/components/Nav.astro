@@ -1,0 +1,220 @@
+---
+import { navigation } from '../config/site';
+import { url, stripBase } from '../lib/url';
+import Icon from './Icon.astro';
+
+const current = stripBase(Astro.url.pathname);
+const isActive = (href?: string) => href === current;
+---
+
+<nav id="site-nav" class="nav" aria-label="Hauptnavigation">
+  <ul class="nav__list">
+    {
+      navigation.map((item, i) =>
+        item.children ? (
+          <li class="nav__item nav__item--has-sub" data-submenu>
+            <button
+              type="button"
+              class:list={['nav__link', 'nav__subtoggle', { 'is-active': item.children.some((c) => isActive(c.href)) }]}
+              aria-expanded="false"
+              aria-controls={`subnav-${i}`}
+            >
+              {item.label}
+              <Icon name="chevronDown" size={18} class="nav__chevron" />
+            </button>
+            <ul class="nav__sub" id={`subnav-${i}`}>
+              {item.children.map((child) => (
+                <li>
+                  <a class="nav__sublink" href={url(child.href)} aria-current={isActive(child.href) ? 'page' : undefined}>
+                    {child.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ) : (
+          <li class="nav__item">
+            <a class="nav__link" href={url(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ),
+      )
+    }
+  </ul>
+</nav>
+
+<style>
+  .nav__list,
+  .nav__sub {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav__link,
+  .nav__sublink {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-height: 44px;
+    padding: 0.5rem 0.75rem;
+    border: 0;
+    border-radius: var(--r-sm);
+    background: none;
+    color: var(--c-text);
+    font-weight: var(--fw-semibold);
+    font-size: 0.975rem;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      color var(--dur) var(--ease),
+      background-color var(--dur) var(--ease);
+  }
+
+  .nav__link:hover,
+  .nav__sublink:hover {
+    color: var(--c-primary-strong);
+    background: var(--c-surface-hover);
+  }
+
+  .nav__link[aria-current='page'],
+  .nav__link.is-active,
+  .nav__sublink[aria-current='page'] {
+    color: var(--c-primary);
+  }
+
+  .nav__link[aria-current='page']::after,
+  .nav__link.is-active::after {
+    content: '';
+    position: absolute;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.25rem;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+  }
+
+  .nav__item {
+    position: relative;
+  }
+
+  .nav__link {
+    position: relative;
+  }
+
+  .nav__subtoggle :global(.nav__chevron) {
+    transition: transform var(--dur) var(--ease);
+  }
+
+  [aria-expanded='true'] > :global(.nav__chevron) {
+    transform: rotate(180deg);
+  }
+
+  /* ---------- Mobil ---------- */
+  @media (max-width: 63.99rem) {
+    .nav {
+      position: fixed;
+      inset: var(--header-current, var(--header-h)) 0 auto 0;
+      max-height: calc(100dvh - var(--header-current, var(--header-h)));
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      background: var(--c-bg);
+      border-top: 1px solid var(--c-border);
+      border-bottom: 1px solid var(--c-border-strong);
+      padding: var(--sp-2) var(--gutter) var(--sp-4);
+    }
+
+    /* Ohne JavaScript ist das Menü einfach sichtbar (unter dem Header, im Fluss). */
+    :global(html:not(.js)) .nav {
+      position: static;
+      max-height: none;
+      box-shadow: none;
+      width: 100%;
+    }
+
+    :global(html.js) .nav {
+      display: none;
+    }
+
+    :global(html.js [data-menu-open]) .nav {
+      display: block;
+    }
+
+    .nav__link,
+    .nav__sublink {
+      font-size: 1.0625rem;
+      min-height: 48px;
+      width: 100%;
+    }
+
+    .nav__subtoggle {
+      justify-content: space-between;
+    }
+
+    .nav__link[aria-current='page']::after,
+    .nav__link.is-active::after {
+      display: none;
+    }
+
+    .nav__item + .nav__item {
+      border-top: 1px solid var(--c-border);
+    }
+
+    .nav__sub {
+      padding: 0 0 var(--sp-1) var(--sp-2);
+    }
+
+    :global(html.js) .nav__subtoggle[aria-expanded='false'] + .nav__sub {
+      display: none;
+    }
+  }
+
+  /* ---------- Desktop ---------- */
+  @media (min-width: 64rem) {
+    .nav__list {
+      display: flex;
+      align-items: center;
+      gap: 0.125rem;
+    }
+
+    .nav__sub {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 0;
+      min-width: 16rem;
+      padding: var(--sp-1);
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+      box-shadow: var(--shadow-md);
+      display: none;
+      z-index: 10;
+    }
+
+    /* Unsichtbare Brücke, damit das Menü beim Überfahren nicht zuklappt */
+    .nav__sub::before {
+      content: '';
+      position: absolute;
+      inset: -0.6rem 0 auto 0;
+      height: 0.6rem;
+    }
+
+    .nav__subtoggle[aria-expanded='true'] + .nav__sub {
+      display: block;
+    }
+
+    /* Ohne JavaScript: Hover und Tastaturfokus öffnen das Untermenü */
+    :global(html:not(.js)) .nav__item--has-sub:hover .nav__sub,
+    :global(html:not(.js)) .nav__item--has-sub:focus-within .nav__sub {
+      display: block;
+    }
+
+    .nav__sublink {
+      width: 100%;
+      font-weight: var(--fw-medium);
+    }
+  }
+</style>

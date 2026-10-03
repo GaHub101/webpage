@@ -1,0 +1,288 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import Icon from './Icon.astro';
+
+interface Props {
+  items: Array<{ bild: ImageMetadata; alt: string; beschriftung?: string }>;
+}
+
+const { items } = Astro.props;
+const BLANK = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+
+// Grosse Version für die Lightbox (und als Link ohne JavaScript)
+const large = await Promise.all(items.map((i) => getImage({ src: i.bild, width: 1600, format: 'webp' })));
+---
+
+<div class="gallery" data-gallery>
+  <ul class="gallery__grid">
+    {
+      items.map((item, i) => (
+        <li>
+          <a
+            class="gallery__item"
+            href={large[i].src}
+            data-index={i}
+            data-full={large[i].src}
+            data-alt={item.alt}
+            data-caption={item.beschriftung ?? ''}
+          >
+            <Picture
+              src={item.bild}
+              alt={item.alt}
+              widths={[360, 540, 720]}
+              sizes="(min-width: 64rem) 380px, (min-width: 40rem) 50vw, 100vw"
+              formats={['avif', 'webp']}
+            />
+            {item.beschriftung && <span class="gallery__caption">{item.beschriftung}</span>}
+            <span class="gallery__zoom" aria-hidden="true">
+              <Icon name="expand" size={18} />
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <dialog class="lightbox" aria-label="Bildansicht" data-lightbox>
+    <figure class="lightbox__figure">
+      <img class="lightbox__img" src={BLANK} alt="" data-lightbox-img />
+      <figcaption class="lightbox__caption">
+        <span data-lightbox-caption></span>
+        <span class="lightbox__count" data-lightbox-count></span>
+      </figcaption>
+    </figure>
+    <button type="button" class="lightbox__btn lightbox__btn--close" data-lightbox-close>
+      <Icon name="close" />
+      <span class="visually-hidden">Schliessen</span>
+    </button>
+    <button type="button" class="lightbox__btn lightbox__btn--prev" data-lightbox-prev>
+      <Icon name="chevronLeft" />
+      <span class="visually-hidden">Vorheriges Bild</span>
+    </button>
+    <button type="button" class="lightbox__btn lightbox__btn--next" data-lightbox-next>
+      <Icon name="chevronRight" />
+      <span class="visually-hidden">Nächstes Bild</span>
+    </button>
+  </dialog>
+</div>
+
+<style>
+  .gallery__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--sp-2);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  }
+
+  .gallery__item {
+    position: relative;
+    display: block;
+    aspect-ratio: 3 / 2;
+    border-radius: var(--r-md);
+    overflow: hidden;
+    background: var(--c-bg-warm);
+  }
+
+  .gallery__item :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity var(--dur) var(--ease);
+  }
+
+  .gallery__item:hover :global(img) {
+    opacity: 0.85;
+  }
+
+  .gallery__caption {
+    position: absolute;
+    left: var(--sp-1);
+    bottom: var(--sp-1);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--r-sm);
+    background: rgb(15 21 23 / 0.85);
+    color: var(--c-text);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+  }
+
+  .gallery__zoom {
+    position: absolute;
+    top: var(--sp-1);
+    right: var(--sp-1);
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--r-md);
+    background: var(--c-primary-fill);
+    color: var(--c-on-primary);
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease);
+  }
+
+  .gallery__item:hover .gallery__zoom,
+  .gallery__item:focus-visible .gallery__zoom {
+    opacity: 1;
+  }
+
+  /* ---------- Lightbox ---------- */
+  .lightbox {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    padding: var(--sp-6) var(--sp-8);
+    border: 0;
+    background: rgb(10 15 17 / 0.97);
+    color: var(--c-text);
+  }
+
+  .lightbox[open] {
+    display: grid;
+    place-items: center;
+  }
+
+  .lightbox::backdrop {
+    background: rgb(10 15 17 / 0.6);
+  }
+
+  .lightbox__figure {
+    margin: 0;
+    display: grid;
+    gap: var(--sp-2);
+    justify-items: center;
+    max-height: 100%;
+  }
+
+  .lightbox__img {
+    max-width: min(100%, 1600px);
+    max-height: calc(100dvh - 10rem);
+    width: auto;
+    height: auto;
+    border-radius: var(--r-sm);
+    object-fit: contain;
+  }
+
+  .lightbox__caption {
+    display: flex;
+    gap: var(--sp-2);
+    font-weight: var(--fw-semibold);
+  }
+
+  .lightbox__count {
+    color: rgb(255 255 255 / 0.75);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lightbox__btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 0;
+    border-radius: var(--r-md);
+    background: rgb(255 255 255 / 0.1);
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color var(--dur) var(--ease);
+  }
+
+  .lightbox__btn:hover {
+    background: rgb(255 255 255 / 0.28);
+  }
+
+  .lightbox__btn:focus-visible {
+    outline-color: #ffffff;
+  }
+
+  .lightbox__btn--close {
+    top: var(--sp-2);
+    right: var(--sp-2);
+  }
+
+  .lightbox__btn--prev,
+  .lightbox__btn--next {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .lightbox__btn--prev {
+    left: var(--sp-2);
+  }
+
+  .lightbox__btn--next {
+    right: var(--sp-2);
+  }
+
+  @media (max-width: 40rem) {
+    .lightbox {
+      padding: var(--sp-8) var(--sp-1);
+    }
+
+    .lightbox__btn--prev,
+    .lightbox__btn--next {
+      top: auto;
+      bottom: var(--sp-2);
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((gallery) => {
+    const dialog = gallery.querySelector<HTMLDialogElement>('[data-lightbox]');
+    if (!dialog || typeof dialog.showModal !== 'function') return; // Fallback: Link auf das grosse Bild
+
+    const links = [...gallery.querySelectorAll<HTMLAnchorElement>('[data-index]')];
+    const img = dialog.querySelector<HTMLImageElement>('[data-lightbox-img]')!;
+    const caption = dialog.querySelector<HTMLElement>('[data-lightbox-caption]')!;
+    const count = dialog.querySelector<HTMLElement>('[data-lightbox-count]')!;
+    let index = 0;
+    let opener: HTMLElement | null = null;
+
+    const show = (i: number) => {
+      index = (i + links.length) % links.length;
+      const a = links[index];
+      img.src = a.dataset.full!;
+      img.alt = a.dataset.alt!;
+      caption.textContent = a.dataset.caption || a.dataset.alt || '';
+      count.textContent = `${index + 1} / ${links.length}`;
+    };
+
+    links.forEach((a, i) =>
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        opener = a;
+        show(i);
+        dialog.showModal();
+        dialog.querySelector<HTMLButtonElement>('[data-lightbox-close]')!.focus();
+      }),
+    );
+
+    dialog.querySelector('[data-lightbox-close]')!.addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-lightbox-prev]')!.addEventListener('click', () => show(index - 1));
+    dialog.querySelector('[data-lightbox-next]')!.addEventListener('click', () => show(index + 1));
+
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(index - 1);
+      if (e.key === 'ArrowRight') show(index + 1);
+    });
+
+    // Klick auf den dunklen Hintergrund schliesst
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+
+    // Fokus zurück auf das zuletzt geöffnete Vorschaubild (Esc schliesst nativ)
+    // (einen Frame später, damit die native Fokus-Wiederherstellung des Browsers uns nicht überschreibt)
+    dialog.addEventListener('close', () => {
+      const target = links[index] ?? opener;
+      requestAnimationFrame(() => target?.focus());
+    });
+  });
+</script>

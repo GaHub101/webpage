@@ -1,27 +1,215 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import Header from '@/components/layout/Header.astro';
-import Footer from '@/components/layout/Footer.astro';
-import Hero from '@/components/sections/Hero.astro';
-import Trust from '@/components/sections/Trust.astro';
-import Leistungen from '@/components/sections/Leistungen.astro';
-import Prozess from '@/components/sections/Prozess.astro';
-import UeberUnsTeaser from '@/components/sections/UeberUnsTeaser.astro';
-import CtaBlock from '@/components/sections/CtaBlock.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+import { Picture } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import TeaserCard from '../components/TeaserCard.astro';
+import MembershipLogos from '../components/MembershipLogos.astro';
+import Icon from '../components/Icon.astro';
+import { url } from '../lib/url';
+
+const page = (await getEntry('seiten', 'startseite'))!;
+const { Content } = await render(page);
+const { hero, teasers = [] } = page.data;
+
+const leistungen = (await getCollection('leistungen')).sort((a, b) => a.data.order - b.data.order);
+const galerie = (await getCollection('galerie')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge).slice(0, 4);
 ---
 
-<BaseLayout
-  title="KFO Praxis Dr. Müller – Kieferorthopädie in Musterstadt"
-  description="Ihre Fachpraxis für Kieferorthopädie in Musterstadt. Aligner, Zahnspangen & Frühbehandlung für Kinder, Jugendliche und Erwachsene. Kostenlose Erstberatung."
->
-  <Header />
-  <main>
-    <Hero />
-    <Trust />
-    <Leistungen />
-    <Prozess />
-    <UeberUnsTeaser />
-    <CtaBlock />
-  </main>
-  <Footer />
+<BaseLayout description={page.data.description} showNotice>
+  {hero && <Hero {...hero} />}
+
+  <section class="section intro" aria-labelledby="intro-title">
+    <div class="container intro__grid">
+      <div>
+        <p class="eyebrow">Willkommen</p>
+        <h2 id="intro-title">Ihre Fachpraxis für Kieferorthopädie</h2>
+      </div>
+      <div class="prose intro__text">
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--warm" aria-labelledby="teaser-title">
+    <div class="container">
+      <div class="section__head">
+        <h2 id="teaser-title">Alles für Ihren Besuch</h2>
+      </div>
+      <div class="teaser-grid">
+        {teasers.map((t) => <TeaserCard {...t} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="themen-title">
+    <div class="container">
+      <div class="section__head">
+        <p class="eyebrow">Unsere Leistungen</p>
+        <h2 id="themen-title">Themen im Überblick</h2>
+      </div>
+      <ul class="topics">
+        {
+          leistungen.map((l) => (
+            <li>
+              <a class="topic" href={url(`/leistungen/${l.id}/`)}>
+                <span class="topic__text">
+                  <span class="topic__title">{l.data.title}</span>
+                  <span class="topic__teaser">{l.data.teaser}</span>
+                </span>
+                <Icon name="arrowRight" class="topic__icon" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--warm" aria-labelledby="mitglied-title">
+    <div class="container">
+      <div class="section__head">
+        <h2 id="mitglied-title">Mitgliedschaften</h2>
+      </div>
+      <MembershipLogos />
+    </div>
+  </section>
+
+  <section class="section strip" aria-labelledby="strip-title">
+    <div class="container">
+      <div class="strip__head">
+        <h2 id="strip-title">Einblick in die Praxis</h2>
+        <a class="btn btn--ghost" href={url('/praxisrundgang/')}>Zum Praxisrundgang <Icon name="arrowRight" /></a>
+      </div>
+      <ul class="strip__list">
+        {
+          galerie.map((g) => (
+            <li>
+              <Picture
+                src={g.data.bild}
+                alt={g.data.alt}
+                widths={[320, 480, 640]}
+                sizes="(min-width: 64rem) 280px, 50vw"
+                formats={['avif', 'webp']}
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .intro__grid {
+    display: grid;
+    gap: var(--sp-3) var(--sp-8);
+  }
+
+  @media (min-width: 56rem) {
+    .intro__grid {
+      grid-template-columns: 5fr 7fr;
+    }
+  }
+
+  .intro__text {
+    font-size: var(--fs-lg);
+  }
+
+  .teaser-grid {
+    display: grid;
+    gap: var(--sp-3);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  }
+
+  .topics {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--sp-2);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  }
+
+  .topic {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    height: 100%;
+    padding: var(--sp-3);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    color: var(--c-text);
+    text-decoration: none;
+    transition:
+      border-color var(--dur) var(--ease),
+      background-color var(--dur) var(--ease);
+  }
+
+  .topic:hover {
+    color: var(--c-text);
+    border-color: var(--c-primary);
+    background: var(--c-surface-hover);
+  }
+
+  .topic__text {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .topic__title {
+    font-weight: var(--fw-bold);
+    font-size: 1.0625rem;
+  }
+
+  .topic__teaser {
+    color: var(--c-text-muted);
+    font-size: var(--fs-sm);
+  }
+
+  .topic :global(.topic__icon) {
+    flex: none;
+    margin-left: auto;
+    color: var(--c-primary);
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .topic:hover :global(.topic__icon) {
+    transform: translateX(4px);
+  }
+
+  .strip__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-4);
+  }
+
+  .strip__head h2 {
+    margin: 0;
+  }
+
+  .strip__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--sp-2);
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 56rem) {
+    .strip__list {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .strip__list :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--r-md);
+  }
+</style>

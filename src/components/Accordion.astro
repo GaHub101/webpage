@@ -1,0 +1,105 @@
+---
+/**
+ * Akkordeon mit nativen <details>-Elementen: ohne JavaScript tastatur- und screenreaderfähig.
+ */
+interface Props {
+  items: Array<{ id: string; frage: string; antwort: string }>;
+}
+
+const { items } = Astro.props;
+const paragraphs = (text: string) => text.trim().split(/\n\s*\n/);
+---
+
+<div class="accordion">
+  {
+    items.map((item) => (
+      <details class="accordion__item" id={item.id}>
+        <summary class="accordion__summary">
+          <span>{item.frage}</span>
+          <span class="accordion__icon" aria-hidden="true" />
+        </summary>
+        <div class="accordion__content">
+          {paragraphs(item.antwort).map((p) => (
+            <p>{p}</p>
+          ))}
+        </div>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .accordion {
+    display: grid;
+    gap: var(--sp-1);
+  }
+
+  .accordion__item {
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    transition: border-color var(--dur) var(--ease);
+  }
+
+  .accordion__item[open] {
+    border-color: var(--c-primary);
+  }
+
+  .accordion__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-2);
+    min-height: 56px;
+    padding: var(--sp-2) var(--sp-3);
+    font-weight: var(--fw-semibold);
+    font-size: 1.0625rem;
+    cursor: pointer;
+    list-style: none;
+    border-radius: var(--r-md);
+  }
+
+  .accordion__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .accordion__summary:hover {
+    color: var(--c-primary-strong);
+  }
+
+  .accordion__icon {
+    position: relative;
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--r-sm);
+    background: var(--c-primary-soft);
+  }
+
+  .accordion__icon::before,
+  .accordion__icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 2px;
+    margin: -1px 0 0 -6px;
+    border-radius: 1px;
+    background: var(--c-primary);
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .accordion__icon::after {
+    transform: rotate(90deg);
+  }
+
+  [open] .accordion__icon::after {
+    transform: rotate(0deg);
+  }
+
+  .accordion__content {
+    padding: 0 var(--sp-3) var(--sp-2);
+    color: var(--c-text-muted);
+  }
+</style>
