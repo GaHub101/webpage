@@ -46,18 +46,8 @@ import Nav from './Nav.astro';
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 50;
-    background: color-mix(in srgb, var(--c-bg) 92%, transparent);
-    backdrop-filter: saturate(1.4) blur(10px);
-    -webkit-backdrop-filter: saturate(1.4) blur(10px);
-    border-bottom: 1px solid transparent;
-    transition:
-      border-color var(--dur) var(--ease),
-      box-shadow var(--dur) var(--ease);
-  }
-
-  .site-header.is-compact {
-    border-bottom-color: var(--c-border);
-    box-shadow: var(--shadow-sm);
+    background: var(--c-bg);
+    border-bottom: 1px solid var(--c-border);
   }
 
   .site-header__inner {
@@ -124,8 +114,8 @@ import Nav from './Nav.astro';
     gap: 0.5rem;
     min-height: 44px;
     padding: 0.5rem 1rem;
-    border-radius: var(--r-pill);
-    background: var(--c-primary);
+    border-radius: var(--r-md);
+    background: var(--c-primary-fill);
     color: var(--c-on-primary);
     font-weight: var(--fw-bold);
     font-size: 0.95rem;
@@ -135,7 +125,7 @@ import Nav from './Nav.astro';
   }
 
   .header-phone:hover {
-    background: var(--c-primary-strong);
+    background: var(--c-primary-fill-hover);
     color: var(--c-on-primary);
   }
 

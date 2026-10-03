@@ -7,10 +7,10 @@ import { dirname } from 'node:path';
 const out = 'src/assets/images/';
 
 const palettes = [
-  ['#f6e7e4', '#e9c9c3', '#c8102e'],
-  ['#efe9e4', '#d9cfc7', '#8c827d'],
-  ['#f3ece8', '#e6d3cd', '#a00d25'],
-  ['#ece7e3', '#cfc4bc', '#5f5652'],
+  ['#1b2a2e', '#1b2a2e', '#5bbcc7'],
+  ['#1d2528', '#1d2528', '#9fb2b7'],
+  ['#172a2f', '#172a2f', '#0f6e7c'],
+  ['#20292c', '#20292c', '#56707a'],
 ];
 
 function svg(w, h, label, i = 0, kind = 'room') {
@@ -32,7 +32,7 @@ function svg(w, h, label, i = 0, kind = 'room') {
   return Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
     <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs>
     <rect width="100%" height="100%" fill="url(#g)"/>${shapes}
-    <text x="50%" y="${h - fs * 1.4}" text-anchor="middle" font-family="sans-serif" font-size="${fs}" font-weight="700" fill="#2a2321" fill-opacity=".55">${label}</text>
+    <text x="50%" y="${h - fs * 1.4}" text-anchor="middle" font-family="sans-serif" font-size="${fs}" font-weight="700" fill="#e7eef0" fill-opacity=".45">${label}</text>
   </svg>`);
 }
 

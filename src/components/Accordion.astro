@@ -38,12 +38,11 @@ const paragraphs = (text: string) => text.trim().split(/\n\s*\n/);
     background: var(--c-surface);
     border: 1px solid var(--c-border);
     border-radius: var(--r-md);
-    transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+    transition: border-color var(--dur) var(--ease);
   }
 
   .accordion__item[open] {
-    border-color: color-mix(in srgb, var(--c-primary) 35%, var(--c-border));
-    box-shadow: var(--shadow-sm);
+    border-color: var(--c-primary);
   }
 
   .accordion__summary {
@@ -73,7 +72,7 @@ const paragraphs = (text: string) => text.trim().split(/\n\s*\n/);
     flex: none;
     width: 28px;
     height: 28px;
-    border-radius: 50%;
+    border-radius: var(--r-sm);
     background: var(--c-primary-soft);
   }
 

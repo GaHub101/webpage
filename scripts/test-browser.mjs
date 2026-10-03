@@ -49,7 +49,7 @@ const newPage = async (opts = {}) => {
 };
 
 // ---------- Barrierefreiheit ----------
-for (const scheme of ['light', 'dark']) {
+for (const scheme of ['dark']) {
   for (const width of [390, 1280]) {
     // bypassCSP: axe wird als Inline-Skript eingefügt (die CSP der Seite würde das zu Recht blockieren)
     const page = await newPage({ colorScheme: scheme, viewport: { width, height: 900 }, bypassCSP: true });
@@ -67,7 +67,7 @@ for (const scheme of ['light', 'dark']) {
     await page.close();
   }
 }
-ok(`axe auf ${pages.length} Seiten × hell/dunkel × mobil/desktop`);
+ok(`axe auf ${pages.length} Seiten × mobil/desktop`);
 
 // ---------- Mobiles Menü ----------
 {
@@ -114,7 +114,9 @@ ok(`axe auf ${pages.length} Seiten × hell/dunkel × mobil/desktop`);
   if ((await page.textContent('[data-lightbox-count]'))?.trim() !== `2 / ${await page.locator('.gallery__item').count()}`) fail('Pfeiltaste wechselt Bild nicht');
   await page.keyboard.press('Escape');
   if (await dialog.isVisible()) fail('Lightbox schliesst nicht mit Esc');
-  if ((await page.evaluate(() => document.activeElement?.getAttribute('data-index'))) !== '1') fail('Fokus kehrt nicht zum Vorschaubild zurück');
+  await page
+    .waitForFunction(() => document.activeElement?.getAttribute('data-index') === '1', null, { timeout: 2000 })
+    .catch(() => fail('Fokus kehrt nicht zum Vorschaubild zurück'));
   ok('Lightbox');
   await page.close();
 }

@@ -76,7 +76,7 @@ const isActive = (href?: string) => href === current;
   .nav__link:hover,
   .nav__sublink:hover {
     color: var(--c-primary-strong);
-    background: var(--c-bg-warm);
+    background: var(--c-surface-hover);
   }
 
   .nav__link[aria-current='page'],
@@ -123,7 +123,7 @@ const isActive = (href?: string) => href === current;
       overscroll-behavior: contain;
       background: var(--c-bg);
       border-top: 1px solid var(--c-border);
-      box-shadow: var(--shadow-lg);
+      border-bottom: 1px solid var(--c-border-strong);
       padding: var(--sp-2) var(--gutter) var(--sp-4);
     }
 

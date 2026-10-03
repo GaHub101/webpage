@@ -211,7 +211,7 @@ Der Code bleibt gleich. Es ändern sich nur die Umgebungsvariablen `SITE_URL`, `
 ## 6. Technik und Qualität
 
 - **Astro 7**, rein statisch. JavaScript nur für Menü, Lightbox und Formular, jeweils mit Fallback ohne JS.
-- **Plain CSS** mit Design-Tokens in `src/styles/tokens.css` (Farben, Schriftgrössen, Abstände). Dunkelmodus folgt der Systemeinstellung.
+- **Plain CSS** mit Design-Tokens in `src/styles/tokens.css` (Farben, Schriftgrössen, Abstände). Dunkles, flaches Design mit Petrol als Akzent; Farbwechsel nur in dieser Datei.
 - **Schrift:** Manrope, selbst gehostet (`@fontsource-variable/manrope`).
 - **Content Security Policy** wird von Astro per Hash erzeugt. `npm run test:csp` prüft das.
 - **SEO:** Titel/Beschreibung pro Seite, Open Graph, Sitemap, robots.txt, strukturierte Daten (`Dentist`, `FAQPage`).
@@ -219,15 +219,16 @@ Der Code bleibt gleich. Es ändern sich nur die Umgebungsvariablen `SITE_URL`, `
 
 ### Farben und Kontraste (WCAG 2.2 AA)
 
+Stil: dunkel und flach (keine Schatten, keine Verläufe), Akzentfarbe Petrol.
+
 | Kombination | Kontrast |
 |---|---|
-| Primärrot `#C8102E` auf Weiss | 5.88 : 1 |
-| Weiss auf Primärrot (Buttons) | 5.88 : 1 |
-| Hover-Rot `#A00D25` auf Weiss | 8.14 : 1 |
-| Text `#2A2321` auf Weiss | 15.4 : 1 |
-| Sekundärtext `#5F5652` auf Sektion `#FBF6F3` | 6.66 : 1 |
-| Formularrahmen `#8C827D` auf Weiss | 3.75 : 1 (≥ 3 : 1 für Bedienelemente) |
-| Dunkelmodus: Text `#F3EEEB` / Rot `#FF7A87` auf `#1A1615` | 15.6 : 1 / 7.17 : 1 |
+| Text `#E7EEF0` auf Hintergrund `#0F1517` | 15.7 : 1 |
+| Sekundärtext `#9FB2B7` auf Hintergrund | 8.4 : 1 |
+| Petrol-Akzent `#5BBCC7` (Links, Icons) auf Hintergrund | 8.3 : 1 |
+| Weiss auf Petrol-Button `#0F6E7C` | 5.9 : 1 |
+| Weiss auf Button-Hover `#137F8E` | 4.7 : 1 |
+| Formularrahmen `#56707A` auf Hintergrund | 3.5 : 1 (≥ 3 : 1 für Bedienelemente) |
 
 ### Werberegeln (SSO)
 
