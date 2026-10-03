@@ -1,0 +1,105 @@
+/*
+ * DESIGN-TOKENS
+ * Alle Farben, Schriftgrössen, Abstände an einer Stelle.
+ * Kontraste sind nach WCAG 2.2 AA geprüft (siehe README).
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* Farben (hell) */
+  --c-primary: #c8102e; /* 5.88:1 auf Weiss */
+  --c-primary-strong: #a00d25; /* Hover/Fokus, 8.14:1 */
+  --c-primary-soft: #fbe9ec; /* Flächen hinter Icons */
+  --c-on-primary: #ffffff;
+  --c-bg: #ffffff;
+  --c-bg-warm: #fbf6f3;
+  --c-surface: #ffffff;
+  --c-text: #2a2321; /* 15.4:1 */
+  --c-text-muted: #5f5652; /* 7.1:1 */
+  --c-border: #ddd5d0; /* nur dekorativ */
+  --c-border-strong: #8c827d; /* Formularfelder, 3.75:1 */
+  --c-focus: #a00d25;
+  --c-success: #1d6b3a;
+  --c-success-bg: #e8f4ec;
+  --c-error: #a00d25;
+  --c-error-bg: #fbe9ec;
+  --c-overlay: rgb(26 22 21 / 0.62);
+
+  /* Schrift */
+  --font-sans: 'Manrope Variable', 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.875rem;
+  --fs-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --fs-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem);
+  --fs-h3: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --fs-h2: clamp(1.6rem, 1.3rem + 1.2vw, 2.25rem);
+  --fs-h1: clamp(2rem, 1.5rem + 2.4vw, 3.25rem);
+  --lh-body: 1.6;
+  --lh-heading: 1.15;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* Abstände (8-px-Raster) */
+  --sp-1: 0.5rem;
+  --sp-2: 1rem;
+  --sp-3: 1.5rem;
+  --sp-4: 2rem;
+  --sp-5: 2.5rem;
+  --sp-6: 3rem;
+  --sp-8: 4rem;
+  --sp-section: clamp(3rem, 2rem + 4vw, 6rem);
+
+  /* Layout */
+  --container: 75rem;
+  --container-narrow: 46rem;
+  --gutter: clamp(1rem, 0.5rem + 2vw, 2rem);
+  --header-h: 4.5rem;
+  --header-h-compact: 3.75rem;
+
+  /* Form */
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-pill: 999px;
+  --shadow-sm: 0 1px 2px rgb(42 35 33 / 0.06), 0 1px 1px rgb(42 35 33 / 0.04);
+  --shadow-md: 0 8px 24px rgb(42 35 33 / 0.08), 0 2px 6px rgb(42 35 33 / 0.05);
+  --shadow-lg: 0 18px 48px rgb(42 35 33 / 0.14);
+
+  /* Bewegung */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur: 180ms;
+}
+
+/* Dunkelmodus (folgt der Systemeinstellung) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-primary: #ff7a87; /* 7.17:1 auf Hintergrund */
+    --c-primary-strong: #ffa3ac;
+    --c-primary-soft: #3a2124;
+    --c-on-primary: #1a1615;
+    --c-bg: #1a1615;
+    --c-bg-warm: #24201e;
+    --c-surface: #24201e;
+    --c-text: #f3eeeb;
+    --c-text-muted: #b9afaa;
+    --c-border: #3a3431;
+    --c-border-strong: #8c827d;
+    --c-focus: #ffa3ac;
+    --c-success: #8fd6a6;
+    --c-success-bg: #1d2d22;
+    --c-error: #ffa3ac;
+    --c-error-bg: #3a2124;
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-md: 0 8px 24px rgb(0 0 0 / 0.35);
+    --shadow-lg: 0 18px 48px rgb(0 0 0 / 0.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur: 0.01ms;
+  }
+}

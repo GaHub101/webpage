@@ -1,0 +1,21 @@
+---
+/**
+ * TODO: Durch das echte Praxislogo ersetzen (SVG in src/assets/images/logos/ ablegen und hier einbinden).
+ * Platzhalter: stilisierter Zahn mit Bogen in der Primärfarbe.
+ */
+interface Props {
+  size?: number;
+}
+const { size = 40 } = Astro.props;
+---
+
+<svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true" focusable="false" class="logo-mark">
+  <rect width="48" height="48" rx="12" fill="var(--c-primary)"></rect>
+  <path
+    d="M24 13.5c-2.2-1.6-4.6-2.2-7-1.6-3.6.9-5.4 4.4-4.7 8.4.5 2.9 1.8 5 2.4 7.7.7 3.3.8 8.6 3.4 8.6 2.4 0 2.2-4.6 3.2-7.4.5-1.3 1.3-2 2.7-2s2.2.7 2.7 2c1 2.8.8 7.4 3.2 7.4 2.6 0 2.7-5.3 3.4-8.6.6-2.7 1.9-4.8 2.4-7.7.7-4-1.1-7.5-4.7-8.4-2.4-.6-4.8 0-7 1.6Z"
+    fill="none"
+    stroke="var(--c-on-primary)"
+    stroke-width="2.4"
+    stroke-linejoin="round"></path>
+  <path d="M14.5 21.5c6.3 2.3 12.7 2.3 19 0" fill="none" stroke="var(--c-on-primary)" stroke-width="2.4" stroke-linecap="round"></path>
+</svg>

@@ -1,0 +1,279 @@
+---
+import { site } from '../config/site';
+import { nbsp } from '../lib/format';
+import { url } from '../lib/url';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import Nav from './Nav.astro';
+---
+
+<div class="header-sentinel" data-header-sentinel aria-hidden="true"></div>
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <a class="brand" href={url('/')}>
+      <Logo />
+      <span class="brand__text">
+        <span class="brand__name">{site.name}</span>
+        <span class="brand__tagline">{site.tagline}</span>
+      </span>
+    </a>
+
+    <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+      <Icon name="menu" class="menu-toggle__open" />
+      <Icon name="close" class="menu-toggle__close" />
+      <span class="visually-hidden">Menü</span>
+    </button>
+
+    <Nav />
+
+    <a class="header-phone" href={`tel:${site.phone.tel}`}>
+      <Icon name="phone" size={18} />
+      <span><span class="visually-hidden">Telefon </span>{nbsp(site.phone.display)}</span>
+    </a>
+
+  </div>
+</header>
+
+<style>
+  .header-sentinel {
+    position: absolute;
+    top: 0;
+    height: 1px;
+    width: 1px;
+  }
+
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--c-bg) 92%, transparent);
+    backdrop-filter: saturate(1.4) blur(10px);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid transparent;
+    transition:
+      border-color var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease);
+  }
+
+  .site-header.is-compact {
+    border-bottom-color: var(--c-border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    height: var(--header-h);
+    transition: height var(--dur) var(--ease);
+  }
+
+  .is-compact .site-header__inner {
+    height: var(--header-h-compact);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-right: auto;
+    color: var(--c-text);
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  .brand :global(.logo-mark) {
+    flex: none;
+    transition:
+      width var(--dur) var(--ease),
+      height var(--dur) var(--ease);
+  }
+
+  .is-compact .brand :global(.logo-mark) {
+    width: 34px;
+    height: 34px;
+  }
+
+  .brand__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    min-width: 0;
+  }
+
+  .brand__name {
+    font-weight: var(--fw-bold);
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .brand__tagline {
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+  }
+
+  .brand:hover {
+    color: var(--c-text);
+  }
+
+  .header-phone {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    border-radius: var(--r-pill);
+    background: var(--c-primary);
+    color: var(--c-on-primary);
+    font-weight: var(--fw-bold);
+    font-size: 0.95rem;
+    text-decoration: none;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .header-phone:hover {
+    background: var(--c-primary-strong);
+    color: var(--c-on-primary);
+  }
+
+  .menu-toggle {
+    display: none;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin-right: -0.5rem;
+    border: 0;
+    border-radius: var(--r-sm);
+    background: none;
+    color: var(--c-text);
+    cursor: pointer;
+  }
+
+  .menu-toggle :global(.menu-toggle__close) {
+    display: none;
+  }
+
+  .menu-toggle[aria-expanded='true'] :global(.menu-toggle__open) {
+    display: none;
+  }
+
+  .menu-toggle[aria-expanded='true'] :global(.menu-toggle__close) {
+    display: block;
+  }
+
+  :global(html.js) .menu-toggle {
+    display: grid;
+  }
+
+  /* Ohne JavaScript: Menü umbricht unter das Logo */
+  :global(html:not(.js)) .site-header {
+    position: static;
+  }
+
+  :global(html:not(.js)) .site-header__inner {
+    flex-wrap: wrap;
+    height: auto;
+    padding-block: var(--sp-1);
+  }
+
+  @media (min-width: 64rem) {
+    :global(html.js) .menu-toggle {
+      display: none;
+    }
+
+    :global(html:not(.js)) .site-header {
+      position: fixed;
+    }
+
+    :global(html:not(.js)) .site-header__inner {
+      flex-wrap: nowrap;
+      height: var(--header-h);
+      padding-block: 0;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .header-phone {
+      display: inline-flex;
+    }
+  }
+
+  @media (max-width: 26rem) {
+    .brand__tagline {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const sentinel = document.querySelector('[data-header-sentinel]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const desktop = window.matchMedia('(min-width: 64rem)');
+
+  if (header) {
+    const setHeight = () =>
+      document.documentElement.style.setProperty('--header-current', `${header.getBoundingClientRect().height}px`);
+
+    // Kompakter Header beim Scrollen (ohne Scroll-Listener)
+    if (sentinel && 'IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) => {
+        header.classList.toggle('is-compact', !entry.isIntersecting);
+        requestAnimationFrame(setHeight);
+      }).observe(sentinel);
+    }
+
+    // ---------- Mobiles Menü ----------
+    const setMenu = (open: boolean, returnFocus = false) => {
+      if (!toggle) return;
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.querySelector('.visually-hidden')!.textContent = open ? 'Menü schliessen' : 'Menü';
+      header.toggleAttribute('data-menu-open', open);
+      setHeight();
+      if (!open && returnFocus) toggle.focus();
+    };
+
+    toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+
+    desktop.addEventListener('change', () => setMenu(false));
+
+    // ---------- Untermenü ----------
+    const submenus = header.querySelectorAll<HTMLElement>('[data-submenu]');
+    const closeSub = (item: HTMLElement) => item.querySelector('button')?.setAttribute('aria-expanded', 'false');
+
+    submenus.forEach((item) => {
+      const btn = item.querySelector('button')!;
+      btn.addEventListener('click', () => {
+        btn.setAttribute('aria-expanded', String(btn.getAttribute('aria-expanded') !== 'true'));
+      });
+      // Desktop: Hover öffnet, Fokus ausserhalb schliesst
+      item.addEventListener('mouseenter', () => desktop.matches && btn.setAttribute('aria-expanded', 'true'));
+      item.addEventListener('mouseleave', () => desktop.matches && closeSub(item));
+      item.addEventListener('focusout', (e) => {
+        if (desktop.matches && !item.contains(e.relatedTarget as Node)) closeSub(item);
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const openSub = [...submenus].find((s) => s.querySelector('[aria-expanded="true"]'));
+      if (openSub && (desktop.matches || openSub.contains(document.activeElement))) {
+        closeSub(openSub);
+        openSub.querySelector('button')?.focus();
+        return;
+      }
+      if (toggle?.getAttribute('aria-expanded') === 'true') setMenu(false, true);
+    });
+
+    document.addEventListener('click', (e) => {
+      submenus.forEach((item) => {
+        if (desktop.matches && !item.contains(e.target as Node)) closeSub(item);
+      });
+    });
+
+    setHeight();
+  }
+</script>

@@ -1,0 +1,53 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  lead?: string;
+  eyebrow?: string;
+  image?: ImageMetadata;
+  noindex?: boolean;
+  /** Breite des Inhaltsbereichs */
+  width?: 'narrow' | 'wide';
+}
+
+const { title, description, lead, eyebrow, image, noindex, width = 'wide' } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} image={image} noindex={noindex}>
+  <header class="page-head">
+    <div class="container">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1>{title}</h1>
+      {lead && <p class="lead page-head__lead">{lead}</p>}
+    </div>
+  </header>
+  <div class:list={['container', 'page-body', { 'container--narrow': width === 'narrow' }]}>
+    <slot />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-block: var(--sp-8) var(--sp-6);
+    background:
+      radial-gradient(60rem 20rem at 85% -10%, var(--c-primary-soft), transparent 70%),
+      var(--c-bg-warm);
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .page-head h1 {
+    max-width: 22ch;
+    margin-bottom: 0;
+  }
+
+  .page-head__lead {
+    max-width: 44rem;
+    margin: var(--sp-2) 0 0;
+  }
+
+  .page-body {
+    padding-block: var(--sp-6) var(--sp-section);
+  }
+</style>

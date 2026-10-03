@@ -1,0 +1,17 @@
+---
+import PageLayout from '../../../layouts/PageLayout.astro';
+import { env } from '../../../config/env';
+import { url } from '../../../lib/url';
+---
+
+<PageLayout
+  title="Vielen Dank für Ihre Nachricht"
+  description="Ihre Nachricht ist bei uns eingegangen."
+  lead={env.formMode === 'demo'
+    ? 'Testumgebung: Ihre Nachricht wurde nicht versendet. Im Live-Betrieb erhält die Praxis sie per E-Mail.'
+    : 'Wir haben Ihre Nachricht erhalten und melden uns so bald wie möglich.'}
+  width="narrow"
+  noindex
+>
+  <p><a class="btn btn--primary" href={url('/')}>Zur Startseite</a></p>
+</PageLayout>

@@ -1,0 +1,76 @@
+name: Prüfen und auf GitHub Pages veröffentlichen
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Testumgebung: Suchmaschinen aussperren, Formular im Demo-Modus.
+      PUBLIC_NOINDEX: 'true'
+      PUBLIC_FORM_MODE: demo
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # Adresse und Unterordner der Pages-Website. Für eine eigene Domain die
+      # Repository-Variablen SITE_URL und BASE_PATH setzen (Settings → Variables).
+      - name: Pages-Adresse bestimmen
+        env:
+          VAR_SITE_URL: ${{ vars.SITE_URL }}
+          VAR_BASE_PATH: ${{ vars.BASE_PATH }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+        run: |
+          echo "SITE_URL=${VAR_SITE_URL:-https://${OWNER,,}.github.io}" >> "$GITHUB_ENV"
+          echo "BASE_PATH=${VAR_BASE_PATH:-/${REPO}/}" >> "$GITHUB_ENV"
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Typprüfung
+        run: npx astro check
+      - name: Build
+        run: npm run build
+      - name: HTML-Validierung
+        run: npm run test:html
+      - name: Linkprüfung
+        run: npm run test:links
+      - name: CSP-Prüfung
+        run: npm run test:csp
+      - name: Barrierefreiheit und Funktionstests
+        run: npm run test:browser
+
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: ./dist
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,15 @@
+# Cloudflare Pages: alte URLs der bisherigen Website → neue Struktur (GitHub Pages ignoriert diese Datei).
+/unsere-leistungen/behandlungsangebot       /leistungen/behandlungsangebot/       301
+/unsere-leistungen/behandlungsangebot/      /leistungen/behandlungsangebot/       301
+/unsere-leistungen/unsichtbare-zahnspangen  /leistungen/unsichtbare-zahnspangen/  301
+/unsere-leistungen/unsichtbare-zahnspangen/ /leistungen/unsichtbare-zahnspangen/  301
+/unsere-leistungen/unsere-standards         /leistungen/unsere-standards/         301
+/unsere-leistungen/unsere-standards/        /leistungen/unsere-standards/         301
+/unsere-leistungen/der-erste-termin         /leistungen/der-erste-termin/         301
+/unsere-leistungen/der-erste-termin/        /leistungen/der-erste-termin/         301
+/unsere-leistungen/notfalle                 /leistungen/notfaelle/                301
+/unsere-leistungen/notfalle/                /leistungen/notfaelle/                301
+/unsere-leistungen                          /leistungen/behandlungsangebot/       301
+/unsere-leistungen/                         /leistungen/behandlungsangebot/       301
+/haufige-fragen                             /haeufige-fragen/                     301
+/haufige-fragen/                            /haeufige-fragen/                     301

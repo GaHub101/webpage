@@ -1,0 +1,88 @@
+---
+import '@fontsource-variable/manrope';
+import manropeLatin from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+import '../styles/global.css';
+import Seo from '../components/Seo.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import NoticeBanner from '../components/NoticeBanner.astro';
+import { site } from '../config/site';
+import { url } from '../lib/url';
+import { JS_FLAG } from '../lib/inline-scripts.mjs';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: ImageMetadata;
+  noindex?: boolean;
+  /** Hinweisbanner anzeigen (Startseite) */
+  showNotice?: boolean;
+}
+
+const { title, description, image, noindex, showNotice = false } = Astro.props;
+const notice = site.notice.enabled && (showNotice || site.notice.allPages);
+---
+
+<!doctype html>
+<html lang="de-CH">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline set:html={JS_FLAG} />
+    <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin />
+    <Seo title={title} description={description} image={image} noindex={noindex} />
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <link rel="sitemap" href={url('/sitemap-index.xml')} />
+    <meta name="theme-color" content="#c8102e" />
+    <meta name="format-detection" content="telephone=no" />
+  </head>
+  <body>
+    <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+    <Header />
+    <div class="header-spacer" aria-hidden="true"></div>
+    {notice && <NoticeBanner />}
+    <main id="inhalt" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    top: var(--sp-1);
+    left: var(--sp-1);
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--r-sm);
+    background: var(--c-primary);
+    color: var(--c-on-primary);
+    font-weight: var(--fw-bold);
+    text-decoration: none;
+    transform: translateY(-200%);
+  }
+
+  .skip-link:focus {
+    transform: none;
+  }
+
+  .header-spacer {
+    height: var(--header-h);
+    flex: none;
+  }
+
+  :global(html:not(.js)) .header-spacer {
+    display: none;
+  }
+
+  @media (min-width: 64rem) {
+    :global(html:not(.js)) .header-spacer {
+      display: block;
+    }
+  }
+
+  main:focus {
+    outline: none;
+  }
+</style>

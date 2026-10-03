@@ -1,0 +1,17 @@
+---
+import PageLayout from '../../../layouts/PageLayout.astro';
+import { site } from '../../../config/site';
+import { nbsp } from '../../../lib/format';
+import { url } from '../../../lib/url';
+---
+
+<PageLayout
+  title="Nachricht nicht gesendet"
+  description="Beim Senden Ihrer Nachricht ist ein Problem aufgetreten."
+  lead="Bitte prüfen Sie Ihre Angaben (Name, E-Mail, Nachricht und Bestätigung der Datenschutzerklärung) und versuchen Sie es erneut."
+  width="narrow"
+  noindex
+>
+  <p>Wenn es weiterhin nicht klappt, erreichen Sie uns telefonisch unter <a href={`tel:${site.phone.tel}`}>{nbsp(site.phone.display)}</a>.</p>
+  <p><a class="btn btn--primary" href={url('/kontakt/#formular')}>Zurück zum Formular</a></p>
+</PageLayout>

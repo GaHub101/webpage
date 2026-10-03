@@ -1,0 +1,130 @@
+---
+import { getEntry } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import MapBlock from '../../components/MapBlock.astro';
+import OpeningHours from '../../components/OpeningHours.astro';
+import Icon from '../../components/Icon.astro';
+import { site } from '../../config/site';
+import { nbsp } from '../../lib/format';
+import { url } from '../../lib/url';
+
+const page = (await getEntry('seiten', 'kontakt'))!;
+---
+
+<PageLayout title={page.data.title} description={page.data.description} lead={page.data.lead}>
+  <div class="contact">
+    <div class="contact__info">
+      <section class="card" aria-labelledby="adresse-title">
+        <h2 id="adresse-title" class="card__title">Adresse</h2>
+        <address>
+          <strong>{site.name}</strong><br />
+          {site.address.street}<br />
+          {`${site.address.zip} ${site.address.city}`}
+        </address>
+        <ul class="contact__links">
+          <li>
+            <a href={`tel:${site.phone.tel}`} class="contact__phone">
+              <Icon name="phone" size={20} />
+              <span><span class="visually-hidden">Telefon: </span>{nbsp(site.phone.display)}</span>
+            </a>
+          </li>
+          <li>
+            <a href={`mailto:${site.email}`}>
+              <Icon name="mail" size={20} />
+              <span><span class="visually-hidden">E-Mail: </span>{site.email}</span>
+            </a>
+          </li>
+          <li>
+            <a href={url(site.referralPdf.href)} download>
+              <Icon name="download" size={20} />
+              <span>{site.referralPdf.label}</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section class="card" aria-labelledby="zeiten-title">
+        <h2 id="zeiten-title" class="card__title">Zeiten</h2>
+        <OpeningHours caption="Öffnungszeiten" hours={site.openingHours} />
+        <div class="spacer"></div>
+        <OpeningHours caption="Telefonisch erreichbar" hours={site.phoneHours} />
+      </section>
+
+      <section aria-labelledby="anfahrt-title">
+        <h2 id="anfahrt-title" class="card__title">Anfahrt</h2>
+        <MapBlock />
+      </section>
+    </div>
+
+    <div class="contact__form">
+      <ContactForm />
+    </div>
+  </div>
+</PageLayout>
+
+<style>
+  .contact {
+    display: grid;
+    gap: var(--sp-6);
+  }
+
+  @media (min-width: 64rem) {
+    .contact {
+      grid-template-columns: 5fr 7fr;
+      gap: var(--sp-6);
+      align-items: start;
+    }
+  }
+
+  .contact__info {
+    display: grid;
+    gap: var(--sp-3);
+  }
+
+  .card {
+    padding: var(--sp-3);
+    border-radius: var(--r-lg);
+    background: var(--c-bg-warm);
+  }
+
+  .card__title {
+    font-size: 1.125rem;
+    margin-bottom: var(--sp-2);
+  }
+
+  address {
+    font-style: normal;
+    margin-bottom: var(--sp-2);
+  }
+
+  .contact__links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .contact__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 40px;
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+  }
+
+  .contact__links a:hover {
+    text-decoration: underline;
+  }
+
+  .contact__phone {
+    font-size: 1.25rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .spacer {
+    height: var(--sp-3);
+  }
+</style>

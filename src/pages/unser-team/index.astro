@@ -1,0 +1,47 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import TeamCard from '../../components/TeamCard.astro';
+
+const page = (await getEntry('seiten', 'unser-team'))!;
+const team = (await getCollection('team')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+const gruppen = ['Fachzahnärzte', 'Praxisteam'] as const;
+const members = await Promise.all(team.map(async (m) => ({ ...m, Content: (await render(m)).Content })));
+---
+
+<PageLayout title={page.data.title} description={page.data.description} lead={page.data.lead}>
+  {
+    gruppen.map((g, gi) => {
+      const list = members.filter((m) => m.data.gruppe === g);
+      return list.length ? (
+        <section class="team-group" aria-labelledby={`team-${gi}`}>
+          <h2 id={`team-${gi}`}>{g}</h2>
+          <ul class="team-grid">
+            {list.map(({ data, Content }) => (
+              <li>
+                <TeamCard name={data.name} rolle={data.rolle} foto={data.foto} fotoAlt={data.fotoAlt}>
+                  <Content />
+                </TeamCard>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null;
+    })
+  }
+</PageLayout>
+
+<style>
+  .team-group + .team-group {
+    margin-top: var(--sp-8);
+  }
+
+  .team-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--sp-3);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  }
+</style>

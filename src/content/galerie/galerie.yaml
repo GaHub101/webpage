@@ -1,0 +1,44 @@
+# PRAXISRUNDGANG
+# Bilder in src/assets/images/praxis/ ablegen und hier eintragen. alt = Bildbeschreibung (Pflicht).
+# TODO: Platzhalter durch echte Praxisfotos ersetzen.
+
+- id: empfang
+  reihenfolge: 1
+  bild: ../../assets/images/praxis/praxis-01.jpg
+  alt: Empfangsbereich mit Theke (Platzhalter)
+  beschriftung: Empfang
+- id: wartezimmer
+  reihenfolge: 2
+  bild: ../../assets/images/praxis/praxis-06.jpg
+  alt: Helles Wartezimmer mit Sitzgelegenheiten (Platzhalter)
+  beschriftung: Wartezimmer
+- id: behandlung-1
+  reihenfolge: 3
+  bild: ../../assets/images/praxis/praxis-02.jpg
+  alt: Behandlungszimmer mit Behandlungsstuhl (Platzhalter)
+  beschriftung: Behandlungszimmer
+- id: behandlung-2
+  reihenfolge: 4
+  bild: ../../assets/images/praxis/praxis-07.jpg
+  alt: Zweites Behandlungszimmer (Platzhalter)
+  beschriftung: Behandlungszimmer
+- id: beratung
+  reihenfolge: 5
+  bild: ../../assets/images/praxis/praxis-05.jpg
+  alt: Beratungsraum mit Bildschirm für die Behandlungsplanung (Platzhalter)
+  beschriftung: Beratung
+- id: labor
+  reihenfolge: 6
+  bild: ../../assets/images/praxis/praxis-08.jpg
+  alt: Praxislabor (Platzhalter)
+  beschriftung: Labor
+- id: sterilisation
+  reihenfolge: 7
+  bild: ../../assets/images/praxis/praxis-04.jpg
+  alt: Sterilisationsraum (Platzhalter)
+  beschriftung: Aufbereitung
+- id: prophylaxe
+  reihenfolge: 8
+  bild: ../../assets/images/praxis/praxis-03.jpg
+  alt: Prophylaxe-Zimmer (Platzhalter)
+  beschriftung: Prophylaxe

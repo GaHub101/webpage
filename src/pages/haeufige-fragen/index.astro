@@ -1,0 +1,49 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import Accordion from '../../components/Accordion.astro';
+import Icon from '../../components/Icon.astro';
+import { site } from '../../config/site';
+import { nbsp } from '../../lib/format';
+
+const page = (await getEntry('seiten', 'haeufige-fragen'))!;
+const faq = (await getCollection('faq')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+const items = faq.map((f) => ({ id: f.id, frage: f.data.frage, antwort: f.data.antwort }));
+
+// Strukturierte Daten für Suchmaschinen
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((i) => ({
+    '@type': 'Question',
+    name: i.frage,
+    acceptedAnswer: { '@type': 'Answer', text: i.antwort.trim() },
+  })),
+};
+---
+
+<PageLayout title={page.data.title} description={page.data.description} lead={page.data.lead} width="narrow">
+  <Accordion items={items} />
+
+  <aside class="faq-cta">
+    <h2>Ihre Frage ist nicht dabei?</h2>
+    <p>Wir beraten Sie gerne persönlich am Telefon.</p>
+    <a class="btn btn--primary" href={`tel:${site.phone.tel}`}><Icon name="phone" /> {nbsp(site.phone.display)}</a>
+  </aside>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</PageLayout>
+
+<style>
+  .faq-cta {
+    margin-top: var(--sp-6);
+    padding: var(--sp-4);
+    border-radius: var(--r-lg);
+    background: var(--c-bg-warm);
+    text-align: center;
+  }
+
+  .faq-cta h2 {
+    font-size: var(--fs-h3);
+  }
+</style>

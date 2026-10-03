@@ -1,0 +1,70 @@
+---
+import { Picture } from 'astro:assets';
+
+interface Props {
+  name: string;
+  rolle: string;
+  foto: ImageMetadata;
+  fotoAlt: string;
+}
+
+const { name, rolle, foto, fotoAlt } = Astro.props;
+---
+
+<article class="team-card">
+  <div class="team-card__photo">
+    <Picture src={foto} alt={fotoAlt} widths={[320, 480, 640]} sizes="(min-width: 64rem) 280px, (min-width: 40rem) 45vw, 90vw" formats={['avif', 'webp']} />
+  </div>
+  <div class="team-card__body">
+    <h3 class="team-card__name">{name}</h3>
+    <p class="team-card__role">{rolle}</p>
+    <div class="team-card__text"><slot /></div>
+  </div>
+</article>
+
+<style>
+  .team-card {
+    height: 100%;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .team-card__photo {
+    aspect-ratio: 4 / 5;
+    background: var(--c-bg-warm);
+  }
+
+  .team-card__photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .team-card__body {
+    padding: var(--sp-3);
+  }
+
+  .team-card__name {
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .team-card__role {
+    color: var(--c-primary);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-sm);
+    margin-bottom: var(--sp-2);
+  }
+
+  .team-card__text {
+    color: var(--c-text-muted);
+    font-size: var(--fs-sm);
+  }
+
+  .team-card__text :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

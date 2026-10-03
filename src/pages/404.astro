@@ -1,0 +1,49 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { navigation } from '../config/site';
+import { url } from '../lib/url';
+
+const links = navigation.flatMap((n) => (n.children ? n.children : [{ label: n.label, href: n.href! }]));
+---
+
+<PageLayout
+  title="Seite nicht gefunden"
+  description="Die gesuchte Seite existiert nicht oder wurde verschoben."
+  lead="Die gesuchte Seite existiert nicht (mehr) oder wurde verschoben. Vielleicht hilft Ihnen einer dieser Links weiter:"
+  eyebrow="Fehler 404"
+  width="narrow"
+  noindex
+>
+  <ul class="links">
+    {
+      links.map((l) => (
+        <li>
+          <a href={url(l.href)}>{l.label}</a>
+        </li>
+      ))
+    }
+  </ul>
+</PageLayout>
+
+<style>
+  .links {
+    display: grid;
+    gap: var(--sp-1);
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    padding: 0;
+    list-style: none;
+  }
+
+  .links a {
+    display: block;
+    padding: var(--sp-2);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+  }
+
+  .links a:hover {
+    border-color: var(--c-primary);
+  }
+</style>

@@ -1,0 +1,69 @@
+---
+/**
+ * Datenschutzfreundliche Karte: statisches Bild vom eigenen Server, keine eingebettete Google-Map.
+ * TODO: src/assets/images/karte.jpg durch einen echten Kartenausschnitt ersetzen
+ * (z. B. Export von openstreetmap.org – Quellenangabe «© OpenStreetMap-Mitwirkende» beibehalten).
+ */
+import { Picture } from 'astro:assets';
+import karte from '../assets/images/karte.jpg';
+import { site } from '../config/site';
+import Icon from './Icon.astro';
+---
+
+<figure class="map">
+  <Picture
+    src={karte}
+    alt={`Kartenausschnitt mit dem Standort der Praxis an der ${site.address.street} in ${site.address.city}`}
+    widths={[480, 800, 1200]}
+    sizes="(min-width: 64rem) 560px, 100vw"
+    formats={['avif', 'webp']}
+  />
+  <figcaption class="map__caption">
+    <span class="map__credit">Kartendaten: © OpenStreetMap-Mitwirkende</span>
+    <span class="map__links">
+      <a class="btn btn--ghost" href={site.maps.google} rel="noopener" target="_blank">
+        In Google Maps öffnen <Icon name="external" size={16} /><span class="visually-hidden">(externe Website)</span>
+      </a>
+      <a class="btn btn--ghost" href={site.maps.apple} rel="noopener" target="_blank">
+        In Apple Karten öffnen <Icon name="external" size={16} /><span class="visually-hidden">(externe Website)</span>
+      </a>
+    </span>
+  </figcaption>
+</figure>
+
+<style>
+  .map {
+    margin: 0;
+  }
+
+  .map :global(img) {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--c-border);
+  }
+
+  .map__caption {
+    display: grid;
+    gap: var(--sp-2);
+    margin-top: var(--sp-2);
+  }
+
+  .map__credit {
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+  }
+
+  .map__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-1);
+  }
+
+  .map__links .btn {
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    font-size: var(--fs-sm);
+  }
+</style>

@@ -1,0 +1,436 @@
+---
+/**
+ * Kontaktformular
+ * - funktioniert ohne JavaScript (normales Absenden, Weiterleitung auf Danke-Seite)
+ * - mit JavaScript: Prüfung im Browser und Meldungen ohne Seitenwechsel
+ * - Modus (demo / cloudflare / php) kommt aus PUBLIC_FORM_MODE, siehe src/config/env.ts
+ */
+import { env, formEndpoint } from '../config/env';
+import { site } from '../config/site';
+import { url } from '../lib/url';
+import Icon from './Icon.astro';
+
+const mode = env.formMode;
+const demo = mode === 'demo';
+const action = url(formEndpoint[mode]);
+const turnstile = !demo && env.turnstileSiteKey;
+const MAX = 2000;
+
+// Im Demo-Modus haben die Felder keinen «name»: so landen Testeingaben nie in einer URL.
+const n = (name: string) => (demo ? undefined : name);
+---
+
+<form
+  class="cform"
+  id="formular"
+  action={action}
+  method={demo ? 'get' : 'post'}
+  data-contact-form
+  data-mode={mode}
+  data-success-url={url('/kontakt/danke/')}
+  aria-labelledby="cform-title"
+>
+  <h2 id="cform-title">Kontaktformular</h2>
+
+  {
+    demo && (
+      <p class="cform__demo">
+        <Icon name="info" size={20} />
+        <span>
+          <strong>Testumgebung:</strong> Nachrichten werden nicht versendet.
+        </span>
+      </p>
+    )
+  }
+
+  <div class="cform__notice">
+    <p><strong>{site.mailNotice}</strong></p>
+    <p>Bitte senden Sie über dieses Formular keine Gesundheitsdaten und keine Dokumente.</p>
+  </div>
+
+  <p class="cform__required">Felder mit <span aria-hidden="true">*</span><span class="visually-hidden">Stern</span> sind Pflichtfelder.</p>
+
+  <div class="cform__grid">
+    <div class="field">
+      <label for="cf-name">Name <span aria-hidden="true">*</span></label>
+      <input id="cf-name" name={n('name')} type="text" autocomplete="name" required maxlength="100" aria-describedby="cf-name-err" />
+      <p class="field__error" id="cf-name-err" data-error-for="cf-name"></p>
+    </div>
+
+    <div class="field">
+      <label for="cf-email">E-Mail <span aria-hidden="true">*</span></label>
+      <input id="cf-email" name={n('email')} type="email" autocomplete="email" required maxlength="254" aria-describedby="cf-email-err" />
+      <p class="field__error" id="cf-email-err" data-error-for="cf-email"></p>
+    </div>
+
+    <div class="field field--full">
+      <label for="cf-phone">Telefon <span class="field__optional">(optional)</span></label>
+      <input
+        id="cf-phone"
+        name={n('phone')}
+        type="tel"
+        autocomplete="tel"
+        maxlength="40"
+        pattern="[0-9+()\/ .\-]{6,40}"
+        aria-describedby="cf-phone-err"
+      />
+      <p class="field__error" id="cf-phone-err" data-error-for="cf-phone"></p>
+    </div>
+
+    <div class="field field--full">
+      <label for="cf-message">Ihre Nachricht <span aria-hidden="true">*</span></label>
+      <textarea id="cf-message" name={n('message')} rows="7" required maxlength={MAX} aria-describedby="cf-message-count cf-message-err"></textarea>
+      <p class="field__hint" id="cf-message-count" data-counter data-max={MAX}>Maximal {MAX} Zeichen</p>
+      <p class="field__error" id="cf-message-err" data-error-for="cf-message"></p>
+    </div>
+
+    <div class="field field--full field--check">
+      <input id="cf-privacy" name={n('privacy')} type="checkbox" value="on" required aria-describedby="cf-privacy-err" />
+      <label for="cf-privacy">
+        Ich habe die <a href={url('/datenschutz/')}>Datenschutzerklärung</a> gelesen. <span aria-hidden="true">*</span>
+      </label>
+      <p class="field__error" id="cf-privacy-err" data-error-for="cf-privacy"></p>
+    </div>
+  </div>
+
+  <!-- Spamschutz: für Menschen unsichtbar, Bots füllen es aus -->
+  <div class="cform__hp" aria-hidden="true">
+    <label for="cf-website">Website (bitte leer lassen)</label>
+    <input id="cf-website" name={n('website')} type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  {
+    turnstile && (
+      <>
+        <div class="cf-turnstile" data-sitekey={env.turnstileSiteKey} data-language="de" />
+        <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
+      </>
+    )
+  }
+
+  <div class="cform__status" role="status" aria-live="polite" data-form-status></div>
+
+  <button type="submit" class="btn btn--primary cform__submit" data-submit>
+    <span data-submit-label>Nachricht senden</span>
+    <Icon name="arrowRight" />
+  </button>
+</form>
+
+<style>
+  .cform {
+    padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .cform h2 {
+    font-size: var(--fs-h3);
+  }
+
+  .cform__demo {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--r-md);
+    background: #fff3bf;
+    color: #3d3200;
+    font-size: var(--fs-sm);
+  }
+
+  .cform__demo :global(svg) {
+    flex: none;
+  }
+
+  .cform__notice {
+    padding: var(--sp-2);
+    margin-bottom: var(--sp-2);
+    border-left: 4px solid var(--c-primary);
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    background: var(--c-bg-warm);
+    font-size: var(--fs-sm);
+  }
+
+  .cform__notice p:last-child {
+    margin: 0;
+  }
+
+  .cform__required {
+    font-size: var(--fs-sm);
+    color: var(--c-text-muted);
+  }
+
+  .cform__grid {
+    display: grid;
+    gap: var(--sp-2) var(--sp-3);
+  }
+
+  @media (min-width: 40rem) {
+    .cform__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .field--full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .field label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: var(--fw-semibold);
+  }
+
+  .field__optional {
+    font-weight: var(--fw-regular);
+    color: var(--c-text-muted);
+  }
+
+  .field input:not([type='checkbox']),
+  .field textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.7rem 0.9rem;
+    border: 1.5px solid var(--c-border-strong);
+    border-radius: var(--r-sm);
+    background: var(--c-bg);
+    color: var(--c-text);
+    transition:
+      border-color var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease);
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 10rem;
+  }
+
+  .field input:focus-visible,
+  .field textarea:focus-visible {
+    outline: none;
+    border-color: var(--c-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-primary) 30%, transparent);
+  }
+
+  .field [aria-invalid='true'] {
+    border-color: var(--c-error) !important;
+    background: var(--c-error-bg) !important;
+  }
+
+  .field--check {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 0.75rem;
+    align-items: start;
+  }
+
+  .field--check input {
+    width: 24px;
+    height: 24px;
+    margin: 0.1rem 0 0;
+    accent-color: var(--c-primary);
+  }
+
+  .field--check label {
+    margin: 0;
+    font-weight: var(--fw-regular);
+  }
+
+  .field--check .field__error {
+    grid-column: 2;
+  }
+
+  .field__hint {
+    margin: 0.35rem 0 0;
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .field__error {
+    margin: 0.35rem 0 0;
+    color: var(--c-error);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+  }
+
+  .field__error:empty {
+    display: none;
+  }
+
+  .cform__hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .cf-turnstile {
+    margin-top: var(--sp-3);
+  }
+
+  .cform__status:not(:empty) {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: var(--sp-3);
+    padding: var(--sp-2);
+    border-radius: var(--r-md);
+    font-weight: var(--fw-semibold);
+  }
+
+  .cform__status[data-state='success'] {
+    background: var(--c-success-bg);
+    color: var(--c-success);
+  }
+
+  .cform__status[data-state='error'] {
+    background: var(--c-error-bg);
+    color: var(--c-error);
+  }
+
+  .cform__submit {
+    margin-top: var(--sp-3);
+  }
+
+  .cform__submit[disabled] {
+    opacity: 0.7;
+    cursor: progress;
+  }
+</style>
+
+<script>
+  type Turnstile = { reset: () => void };
+
+  const MESSAGES: Record<string, { missing: string; invalid?: string }> = {
+    'cf-name': { missing: 'Bitte geben Sie Ihren Namen ein.' },
+    'cf-email': {
+      missing: 'Bitte geben Sie Ihre E-Mail-Adresse ein.',
+      invalid: 'Bitte geben Sie eine gültige E-Mail-Adresse ein, z. B. name@beispiel.ch.',
+    },
+    'cf-phone': { missing: '', invalid: 'Bitte geben Sie eine gültige Telefonnummer ein (nur Ziffern, Leerzeichen, + und -).' },
+    'cf-message': { missing: 'Bitte schreiben Sie uns eine Nachricht.' },
+    'cf-privacy': { missing: 'Bitte bestätigen Sie, dass Sie die Datenschutzerklärung gelesen haben.' },
+  };
+
+  // Feldnamen auf dem Server → IDs im Formular
+  const SERVER_FIELDS: Record<string, string> = {
+    name: 'cf-name',
+    email: 'cf-email',
+    phone: 'cf-phone',
+    message: 'cf-message',
+    privacy: 'cf-privacy',
+  };
+
+  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
+    const mode = form.dataset.mode;
+    const status = form.querySelector<HTMLElement>('[data-form-status]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]')!;
+    const fields = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[id^="cf-"]:not(#cf-website), textarea')];
+    let submitted = false;
+
+    form.noValidate = true; // eigene, verständlichere Meldungen statt Browser-Bubbles
+
+    // Zeichenzähler
+    const counter = form.querySelector<HTMLElement>('[data-counter]');
+    const textarea = form.querySelector<HTMLTextAreaElement>('#cf-message');
+    if (counter && textarea) {
+      const max = Number(counter.dataset.max);
+      const update = () => (counter.textContent = `${textarea.value.length} / ${max} Zeichen`);
+      textarea.addEventListener('input', update);
+      update();
+    }
+
+    const setError = (field: HTMLElement, message: string) => {
+      const el = form.querySelector<HTMLElement>(`[data-error-for="${field.id}"]`);
+      if (el) el.textContent = message;
+      if (message) field.setAttribute('aria-invalid', 'true');
+      else field.removeAttribute('aria-invalid');
+    };
+
+    const validate = (field: HTMLInputElement | HTMLTextAreaElement) => {
+      const msgs = MESSAGES[field.id];
+      if (!msgs) return true;
+      const v = field.validity;
+      let message = '';
+      if (v.valueMissing) message = msgs.missing;
+      else if (v.typeMismatch || v.patternMismatch || v.tooLong) message = msgs.invalid ?? msgs.missing;
+      else if (field.type !== 'checkbox' && field.required && !field.value.trim()) message = msgs.missing;
+      setError(field, message);
+      return !message;
+    };
+
+    fields.forEach((f) => {
+      f.addEventListener('blur', () => submitted && validate(f));
+      f.addEventListener('input', () => submitted && f.getAttribute('aria-invalid') && validate(f));
+      f.addEventListener('change', () => submitted && validate(f));
+    });
+
+    const setStatus = (state: 'success' | 'error' | '', text: string) => {
+      status.dataset.state = state;
+      status.textContent = text;
+    };
+
+    const setBusy = (busy: boolean) => {
+      submit.disabled = busy;
+      submitLabel.textContent = busy ? 'Wird gesendet …' : 'Nachricht senden';
+    };
+
+    const succeed = (text: string) => {
+      form.reset();
+      submitted = false;
+      fields.forEach((f) => setError(f, ''));
+      counter && textarea && textarea.dispatchEvent(new Event('input'));
+      setStatus('success', text);
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitted = true;
+      setStatus('', '');
+
+      const invalid = fields.filter((f) => !validate(f));
+      if (invalid.length) {
+        setStatus('error', invalid.length === 1 ? 'Bitte korrigieren Sie das markierte Feld.' : `Bitte korrigieren Sie die ${invalid.length} markierten Felder.`);
+        invalid[0].focus();
+        return;
+      }
+
+      if (mode === 'demo') {
+        setBusy(true);
+        await new Promise((r) => setTimeout(r, 600));
+        setBusy(false);
+        succeed('Testumgebung: Ihre Nachricht wurde geprüft, aber nicht versendet. Im Live-Betrieb erhält die Praxis sie per E-Mail.');
+        return;
+      }
+
+      setBusy(true);
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        const data = (await res.json().catch(() => ({}))) as { ok?: boolean; message?: string; errors?: Record<string, string> };
+
+        if (res.ok && data.ok) {
+          succeed(data.message ?? 'Vielen Dank! Ihre Nachricht wurde gesendet. Wir melden uns so bald wie möglich.');
+        } else {
+          Object.entries(data.errors ?? {}).forEach(([name, msg]) => {
+            const field = form.querySelector<HTMLElement>(`#${SERVER_FIELDS[name]}`);
+            if (field) setError(field, msg);
+          });
+          setStatus('error', data.message ?? 'Die Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es später erneut oder rufen Sie uns an.');
+        }
+      } catch {
+        setStatus('error', 'Keine Verbindung. Bitte prüfen Sie Ihre Internetverbindung oder rufen Sie uns an.');
+      } finally {
+        setBusy(false);
+        (window as unknown as { turnstile?: Turnstile }).turnstile?.reset();
+      }
+    });
+  });
+</script>
